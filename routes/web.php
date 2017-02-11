@@ -14,3 +14,27 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/login', function () {
+    return view('login');
+});
+
+Route::get('/register', function () {
+    return view('register');
+});
+
+Route::get('/forgotpassword', function () {
+    return view('forgotpassword');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+
+Route::get('/gethelp', function () {
+    return view('gethelp');
+});
+
+Route::get('/providehelp', function () {
+    return view('providehelp');
+});
