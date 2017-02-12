@@ -61,6 +61,32 @@ function HelpCtrl ($scope, $timeout, $filter, filteredListService, ngDialog) {
 		$scope.r2_n = true;
 	}
 
+
+
+	// Matching
+
+	$scope.getHelpPpl = [
+	{"id" : "123", "name" : "Peter", "helpNeed" : "2", "status" : 0},
+	{"id" : "234", "name" : "Julia", "helpNeed" : "3", "status" : 0},
+	{"id" : "224", "name" : "MJ", "helpNeed" : "2", "status" : 0},
+	{"id" : "324", "name" : "George", "helpNeed" : "3", "status" : 0},
+	{"id" : "424", "name" : "DD", "helpNeed" : "2", "status" : 0},
+	{"id" : "524", "name" : "Ria", "helpNeed" : "2", "status" : 0}
+	];
+	
+	$scope.provideHelpPpl = [
+	{"id" : "1123", "name" : "Khaled", "status" : 0},
+	{"id" : "2234", "name" : "Roa", "status" : 0},
+	{"id" : "1224", "name" : "Komal", "status" : 0},
+	{"id" : "1324", "name" : "Joe", "status" : 0},
+	{"id" : "1424", "name" : "Deep", "status" : 0},
+	{"id" : "1524", "name" : "Arora", "status" : 0}
+	];
+
+	$scope.success_match = false;
+	$scope.matchify = function(){
+		$scope.success_match = true;
+	}
 }
 
 

@@ -57,7 +57,7 @@
             </ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             
-            @include('menu', ['p'=>'phelp'])
+            @include('menu', ['p'=>'matching'])
 
 
             <!-- /.navbar-collapse -->
@@ -71,87 +71,76 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Provide Help
+                            Match Help
                         </h1>
                     </div>
                 </div>
                 <!-- /.row -->
 
+                <form name="matchingForm">
                 <div class="row">
-
-                    <div class="jumbotron" ng-show="accepted_help">
-
-                        <div class="alert alert-info">
-                            <strong>Note :</strong>Please be sure that you have the money you Pledging ready because You may be matched the Next morning.
-                        </div>
-
-                        <p>By clicking the Submit button, <br />I confirm that I agree with the Terms and conditions of This community. Else, Click the Cancel button to exit.</p>
-
-                        <form>
-                            <button ng-click="provide_accept()" id="accept" class="btn btn-primary btn-lg" role="button">Submit</button>
-                            <button class="btn btn-default btn-lg" role="button">Cancel</button>
-                            
-                        </form>
-                    </div>
-
-
-                    <div class="panel panel-info" ng-show="my_match">
+         
+                    <div class="panel panel-info col-md-4">
                         <div class="panel-heading">
-                            <h4 class="panel-title">Your Match</h4>
+                            <h4 class="panel-title">Get Help</h4>
                         </div>
                         <div class="panel-body">
 
-                            <h3>PLEASE PAY 25,000 TO</h3>
-
-                            <p>
-                                RECIPIENT ACCOUNT NAME : xxxx <br />
-                                BANK NAME : xxxx<br />
-                                ACCOUNT NUMBER : xxxx<br />
-                                PHONE NUMBER : xxxx<br />                                
+                            <p class="line-brk" ng-repeat="(k1,v1) in getHelpPpl">
+                                <input type="checkbox" ng-model="v1[3]"> @{{v1['name']}}
+                                (@{{v1['helpNeed']}})
                             </p>
 
-                            <div class="alert alert-warning">
-                                <strong>Note:</strong>WITHIN 24 HRS OR RISK SUSPENSION
-                                OF YOUR ACCOUNT AND CONSEQUENTLY
-                                REMOVAL OF ALL YOUR REFFERALS
-                            </div>
 
+                        </div>
+                    </div>
 
-                             <button type="button" ng-click="uploadForm()" class="btn btn-info">Upload Proof</button>
+                    <div class="col-md-2">
+                        
+                    </div>
+
+                    <div class="panel panel-info col-md-4">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Provide Help</h4>
+                        </div>
+                        <div class="panel-body">
+
+                            <p class="line-brk" ng-repeat="(k1,v1) in provideHelpPpl">
+                                <input type="checkbox" ng-model="v1[3]"> @{{v1['name']}}
+                            </p>
 
                         </div>
                     </div>
 
 
-                    <div ng-show="upload_proof">
-                        <form ng-submit="uploadProof()">
-                            
-                            <div class="form-group">
-                                <label>Upload</label>
-                                <input type="file" class="form-control">
-                            </div>
 
-                            <button type="submit" class="btn btn-info">Submit</button>
-                            <button type="reset" class="btn btn-default">Reset</button>
-
-                        </form>
-                    </div>
-
-
-                    
-
-                    <div ng-show="proof_yet_accept" class="alert alert-success">
-                        <p>
-                            <strong>Proof Uploaded!</strong>
-                            Waiting for the approval from the match.
-                        </p>
-                    </div>
 
 
 
                 </div>
-                <!-- /.row -->
 
+
+                <div class="row">
+                    
+                    <div class="col-md-3">
+                        <button type="submit" ng-click="matchify()" class="btn btn-info">Submit</button>
+                        <button type="reset" class="btn btn-default">Reset</button>
+                    </div>
+
+                    <div class="col-md-9">
+                        <div ng-show="success_match" class="alert alert-success">
+                            <p>
+                                <strong>Success!</strong>Help Matched.
+                            </p>
+                        </div>
+                    </div>                    
+                </div>
+
+                
+
+
+                <!-- /.row -->
+                </form>
             </div>
             <!-- /.container-fluid -->
 

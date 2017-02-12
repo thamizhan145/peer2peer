@@ -57,7 +57,7 @@
             </ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 
-            @include('menu', ['p'=>'dashboard'])
+            @include('menu', ['p'=>'myref'])
 
             <!-- /.navbar-collapse -->
         </nav>
@@ -69,62 +69,60 @@
                 <!-- Page Heading -->
                 <div class="row">
 
-                <div style="float: right;">
-                    <h4>YOU ARE THE 1564 OF 3000 PARTICIPANTS</h4>
-                </div>
-
-                    <div class="col-lg-9 col-md-9 ">
+                    <div class="col-md-9 col-md-9 ">
                         <h1 class="page-header">
-                            DashBoard
+                            My Referrerals
                         </h1>                            
-                    </div>
-
-
-                    <div class="right-panel col-lg-3 col-md-3">
-                        <div class="panel panel-info">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">TESTIMONIALS</h3>
-                            </div>
-                            <div class="panel-body">
-                                <p class="line-brk">
-                                    My name is john e. 
-                                I provided a help 50,000 on 
-                                2nd January and on 6th January
-                                 I got a help of 100,000. 
-                                </p>
-
-                                <p class="line-brk">
-                                    My name is Ubong D. 
-                                    I provided a help 50,000 on 
-                                    2nd January and on 6th January
-                                     I got a help of 100,000. 
-
-                                </p>
-
-                                <p class="line-brk">
-                                   My name is Grace N. 
-                                    I provided a help 50,000 on 
-                                    2nd January and on 6th January
-                                     I got a help of 100,000.
-                                </p>
-
-                                <p class="line-brk">
-                                My name is Francis Kumar. 
-                                I provided a help 50,000 on 
-                                2nd January and on 6th January
-                                 I got a help of 100,000. 
-
-                                </p>
-
-                            </div>
-
-                        </div>                            
                     </div>
 
                 </div>
                 <!-- /.row -->
 
                 <div class="row">
+
+
+                    <div class="col-md-6">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>EMail</th>
+                                        <th>Joined On</th>
+                                        <th>Bonus Started</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1.</td>
+                                        <td>Ruby</td>
+                                        <td>ruby@gmail.com</td>
+                                        <td>2017-01-01</td>
+                                        <td class="alert-warning"><strong>Pending</strong></td>
+                                    </tr><tr>
+                                        <td>1.</td>
+                                        <td>Jeo</td>
+                                        <td>joe@gmail.com</td>
+                                        <td>2017-02-01</td>
+                                        <td class="alert-success"><strong>Received</strong></td>
+                                    </tr><tr>
+                                        <td>1.</td>
+                                        <td>Bob</td>
+                                        <td>bob@gmail.com</td>
+                                        <td>2017-03-01</td>
+                                        <td class="alert-success"><strong>Received</strong></td>
+                                    </tr><tr>
+                                        <td>1.</td>
+                                        <td>Rio</td>
+                                        <td>roi@gmail.com</td>
+                                        <td>2017-03-01</td>
+                                        <td class="alert-success"><strong>Received</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
 
                 </div>

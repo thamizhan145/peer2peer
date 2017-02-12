@@ -38,3 +38,15 @@ Route::get('/gethelp', function () {
 Route::get('/providehelp', function () {
     return view('providehelp');
 });
+
+Route::get('/matching', function () {
+    return view('matching');
+});
+
+Route::get('/myref', function () {
+    return view('myref');
+});
+
+Route::get('/account', function () {
+    return view('account');
+});

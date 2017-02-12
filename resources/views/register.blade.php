@@ -97,7 +97,22 @@
 
 
                             <div class="form-group">
-                                <label>E-Mail Address</label>
+                                <label>Bank Name</label>
+                                <input type="text" class="form-control" placeholder="Bank Name" required="" value="INT Bank">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Account No.</label>
+                                <input type="text" class="form-control" placeholder="Your Account No" required="" value="04907897987986">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Bank Account Phone No.</label>
+                                <input type="text" class="form-control" placeholder="Phone No." required="" value="+868545666">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Referrer E-Mail Address</label>
                                 <input type="email" class="form-control" placeholder="email@mail.com" required="" value="someemail@gmail.com">
                             </div>
 

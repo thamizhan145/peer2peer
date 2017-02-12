@@ -56,25 +56,10 @@
                 </li>
             </ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav side-nav">
-                    <li>
-                        <a href="/dashboard"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="/account"><i class="fa fa-fw fa-bar-chart-o"></i> Account</a>
-                    </li>
-                    <li>
-                        <a href="/providehelp"><i class="fa fa-fw fa-table"></i> Provide Help</a>
-                    </li>
-                    <li class="active">
-                        <a href="#"><i class="fa fa-fw fa-edit"></i> Get Help</a>
-                    </li>
-                    <li>
-                        <a href="/myreferrerals"><i class="fa fa-fw fa-desktop"></i>My Referrerals</a>
-                    </li>
-                </ul>
-            </div>
+            
+            @include('menu', ['p'=>'ghelp'])
+
+
             <!-- /.navbar-collapse -->
         </nav>
 
