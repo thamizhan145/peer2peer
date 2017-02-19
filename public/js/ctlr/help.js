@@ -75,18 +75,34 @@ function HelpCtrl ($scope, $timeout, $filter, filteredListService, ngDialog) {
 	];
 	
 	$scope.provideHelpPpl = [
-	{"id" : "1123", "name" : "Khaled", "status" : 0},
-	{"id" : "2234", "name" : "Roa", "status" : 0},
-	{"id" : "1224", "name" : "Komal", "status" : 0},
-	{"id" : "1324", "name" : "Joe", "status" : 0},
-	{"id" : "1424", "name" : "Deep", "status" : 0},
-	{"id" : "1524", "name" : "Arora", "status" : 0}
+		{"id" : "1123", "name" : "Khaled", "status" : 0},
+		{"id" : "2234", "name" : "Roa", "status" : 0},
+		{"id" : "1224", "name" : "Komal", "status" : 0},
+		{"id" : "1324", "name" : "Joe", "status" : 0},
+		{"id" : "1424", "name" : "Deep", "status" : 0},
+		{"id" : "1524", "name" : "Arora", "status" : 0}
 	];
 
 	$scope.success_match = false;
 	$scope.matchify = function(){
 		$scope.success_match = true;
 	}
+
+
+
+	// Account
+	$scope.account_info = false;
+	$scope.account_form = true;
+	$scope.show_edit_account = function(){
+		$scope.account_info = false;
+		$scope.account_form = true;
+	}
+
+	$scope.saveAccount = function(){
+		$scope.account_info = true;
+		$scope.account_form = false;
+	}
+
 }
 
 

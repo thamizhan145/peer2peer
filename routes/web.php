@@ -11,8 +11,21 @@
 |
 */
 
+Route::get('/', 'ListController@show');
+
+Route::get('/got', [
+  'middleware' => ['auth'],
+  'uses' => function () {
+   echo "You are allowed to view this page!";
+}]);
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
+
+/*
 Route::get('/', function () {
-    return view('welcome');
+    return view('terms_condit');
 });
 
 Route::get('/login', function () {
@@ -50,3 +63,5 @@ Route::get('/myref', function () {
 Route::get('/account', function () {
     return view('account');
 });
+*/
+
