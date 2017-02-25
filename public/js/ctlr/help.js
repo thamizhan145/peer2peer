@@ -103,6 +103,40 @@ function HelpCtrl ($scope, $timeout, $filter, filteredListService, ngDialog) {
 		$scope.account_form = false;
 	}
 
+
+
+	// Account
+
+	$scope.updateAccount = function(){
+
+		var Pinfo = {
+			'Action' : 'getMyDet',
+			'id' : id
+		};
+
+		httpCall('ctrlr/Prospects.php', Pinfo).success(function(data){
+			console.log(data);
+			if(data){
+				$scope.Events = data['Events'];
+				$scope.Info = data['Info'];
+				$scope.Note = data['Note'];
+
+				$scope.Events.forEach(function(d,i){
+					$scope.EventIds[d.EventID] = d.Name;
+				});
+
+				console.log($scope.EventIds);
+
+			}
+
+		}).error(function(data){
+			console.log('setEvent() Failure : ', data);
+		});
+
+	};
+
+
+
 }
 
 

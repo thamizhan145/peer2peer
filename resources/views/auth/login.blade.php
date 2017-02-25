@@ -44,7 +44,7 @@
                             <div class="col-md-6">
                                 
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                <input type="text" name="captcha" class="form-control" required="">
+                                <input type="text" name="captcha" class="form-control">
                                 <img src="{{Captcha::src()}}" alt="captch">
                                 
 

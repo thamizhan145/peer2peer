@@ -20,8 +20,23 @@ Route::get('/got', [
 }]);
 
 Auth::routes();
-
 Route::get('/home', 'HomeController@index');
+
+// Account
+Route::get('/account', 'AccountController@index');
+Route::post('/account/add', 'AccountController@add');
+Route::post('/account/update', 'AccountController@update');
+Route::get('/account/edit', 'AccountController@edit');
+
+
+// User
+Route::get('/users', 'UserController@index');
+
+
+// GetHelp
+Route::get('/gethelp', 'UserController@gethelp');
+
+
 
 /*
 Route::get('/', function () {

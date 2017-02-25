@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-success">
-                <div class="panel-heading">List of Game of Thrones Characters</div>
+                <div class="panel-heading">Terms &amp; Condition</div>
 
                     @if(Auth::check())
                       <!-- Table -->
@@ -25,7 +25,7 @@
 
             </div>
             @if(Auth::guest())
-              <a href="/login" class="btn btn-info"> You need to login to see the list 😜😜 >></a>
+              <a href="/login" class="btn btn-info"> Accept </a>
             @endif
         </div>
     </div>
