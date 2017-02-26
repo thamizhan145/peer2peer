@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
+<html lang="{{ config('app.locale') }}" ng-app="p2p">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -56,7 +56,9 @@
 
                             <li><a href="/account">Account</a></li>
                             <li><a href="/gethelp">Get Help</a></li>
+                            <li><a href="/providehelp">Provide Help</a></li>
                             @if(Auth::user()->role)
+                                <li><a href="/matching">Matching</a></li>
                                 <li><a href="/users">Users List</a></li>
                             @endif
                             <li class="dropdown">
@@ -86,8 +88,24 @@
 
         @yield('content')
     </div>
+    
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/japp.js"></script>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    <!-- <script src="/js/app.js"></script> -->
+
+
+
+    <script type="text/javascript" src="js/lib/angular.min.js"></script>
+    <script type="text/javascript" src="js/lib/dirPagination.js"></script>
+    <script type="text/javascript" src="js/lib/ngDialog.min.js"></script>
+    <script type="text/javascript" src="js/lib/spin.min.js"></script>
+    <script type="text/javascript" src="js/lib/angular-spinner.min.js"></script>
+    <script type="text/javascript" src="js/lib/angular-loading-spinner.js"></script>
+
+    <script type="text/javascript" src="js/ctlr/help.js"></script>
+    <script type="text/javascript" src="js/app-ng.js"></script>
 </body>
 </html>

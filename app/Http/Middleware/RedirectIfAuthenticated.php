@@ -18,6 +18,9 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
+
+            //$usr = $user->toArray();
+            //$request->session()->put('user', $usr);
             return redirect('/home');
         }
 

@@ -6,6 +6,7 @@ app.controller('HelpCtrl', HelpCtrl);
 
 app.factory('httpCall', ['$http', function($http){
 
+    console.log($('meta[name=csrf-token]').attr('content'));
     return function(Url, InputData){
 
         var options = {
@@ -19,7 +20,10 @@ app.factory('httpCall', ['$http', function($http){
                 return str.join("&");
             },
             data: InputData,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-Token' : $('meta[name=csrf-token]').attr('content')
+             }
         };
 
         return $http(options);

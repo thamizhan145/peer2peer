@@ -19,6 +19,8 @@ Route::get('/got', [
    echo "You are allowed to view this page!";
 }]);
 
+
+
 Auth::routes();
 Route::get('/home', 'HomeController@index');
 
@@ -34,7 +36,39 @@ Route::get('/users', 'UserController@index');
 
 
 // GetHelp
-Route::get('/gethelp', 'UserController@gethelp');
+Route::get('/gethelp', 'HelpController@gethelp');
+
+// ProvideHelp
+Route::get('/providehelp', 'HelpController@providehelp');
+
+Route::post('/acceptProvideHelp', 'HelpController@acceptProvideHelp');
+Route::post('/makeMemberToGetHelp', 'HelpController@makeMemberToGetHelp');
+
+
+// Matching
+Route::get('/matching', 'HelpController@matching');
+Route::get('/MatchUser', 'HelpController@MatchUser');
+
+Route::post('/uploadProof', 'HelpController@uploadProof');
+
+
+//Images
+
+Route::get('proofimages/{filename}', function ($filename)
+{
+    $path = storage_path() . '/proof_uploads/' . $filename;
+
+    if(!File::exists($path)) abort(404);
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});
+
 
 
 
