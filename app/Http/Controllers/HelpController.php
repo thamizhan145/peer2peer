@@ -21,6 +21,26 @@ class HelpController extends Controller {
 	}
 
 
+    public function index(Request $request)
+    {
+        $user = $request->session()->get('user');
+        $resp = $this->analysisHelp($user['id']);
+
+         $resp['acc'] = $this->checkAccount($user['id']);
+
+        return view('home', ['d' => $resp]);
+    }
+
+    public function checkAccount($uid)
+    {
+        $AccData = DB::table('accounts')        
+                ->where('user_id', $uid)
+                ->get();
+
+        return count($AccData);
+
+    }
+
 
 	public function makeMemberToGetHelp(Request $request){
 		
@@ -282,7 +302,7 @@ class HelpController extends Controller {
     public function uploadProof(Request $req)
     {
 
-        echo "<pre>";
+        // echo "<pre>";
         // From Req
         $file = $req->file('file_proof');
         $help_id = $req->get('help_id');
@@ -298,8 +318,8 @@ class HelpController extends Controller {
         $fileName = time().'_'.$file->getClientOriginalName();
         $kk = $file->move($destinationPath, $fileName);
 
-        echo "Upload \n";
-        var_dump($kk);
+        // echo "Upload \n";
+        // var_dump($kk);
 
 
         $where = [
@@ -314,19 +334,21 @@ class HelpController extends Controller {
             ->where($where)
             ->update($update);
         
-        var_dump($upd);
+        // var_dump($upd);
 
-        exit;
+        // exit;
+
+        return redirect('providehelp');
 
     }
 
 
-    public function ackTheHelp()
+    public function ackTheHelp(Request $req)
     {
         $help_id = $req->get('help_id');
         $sender_id = $req->get('sender_id');
         
-        // From Session    
+        // From Session
         $user = $req->session()->get('user');
         $receiver_id = $user['id'];
 
@@ -345,7 +367,7 @@ class HelpController extends Controller {
             ->where($where)
             ->update($update);
         
-        var_dump($upd);
+        var_dump($upd_rec);
 
 
         // Check Here This member GET help completed.
@@ -370,7 +392,7 @@ class HelpController extends Controller {
                 'accept_provide_on' => NULL, 
                 'status'=> 0, 
                 'eligible_for' => 0
-                ]
+                ];
 
             $upd_rec = DB::table('help_members')
                         ->where($where)
@@ -381,15 +403,17 @@ class HelpController extends Controller {
         if($upd_rec){
             //Provie Help is over, Make the sender ID to Get Help
             $where = ['member_id' => $sender_id];
-            $update = ['onProcess' => 0, 'status'=> 2, 'eligible_for' => 2]
+            $update = ['onProcess' => 0, 'status'=> 2, 'eligible_for' => 2];
 
-            $upd_rec = DB::table('help_members')
+            $upd_Help_mem = DB::table('help_members')
                         ->where($where)
                         ->update($update);
+
+            var_dump($upd_Help_mem);
         }
         
 
-        exit;
+       return redirect('gethelp');
 
     }
 
@@ -412,7 +436,7 @@ class HelpController extends Controller {
 
         if(count($Data)){
             DB::table('help_members')
-                    ->where('id', $user['id'])
+                    ->where('member_id', $user['id'])
                     ->update($userData);
         }else{
             //Do Insert
@@ -428,26 +452,43 @@ class HelpController extends Controller {
     public function acceptGetHelp(Request $request)
     {
 
-
         $user = $request->session()->get('user');
         $Data = DB::table('help_members')        
                         ->where('member_id', $user['id'])
                         ->get();
+        
+        // print_r($Data);
+        // exit;
+
+
+
         $userData = [
-                'status' => 1,
+                'status' => 2,
                 'accept_get' => 1,
                 'accept_get_on' => date('Y-m-d H:i:s', time())
             ];
 
         if(count($Data)){
-            DB::table('help_members')
-                    ->where('id', $user['id'])
+            // Update
+            // echo "Update";
+            $uu = DB::table('help_members')
+                    ->where('member_id', $user['id'])
                     ->update($userData);
+
+            // var_dump($uu);
         }else{
             //Do Insert
+            // echo "Insert";
+
             $userData['member_id'] = $user['id'];
-            DB::table('help_members')->insert($userData);
+            $ui = DB::table('help_members')->insert($userData);
+
+            // var_dump($ui);
         }
+
+        // echo "Here";
+        // exit;
+
 
         return redirect('gethelp');
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 27, 2017 at 07:22 AM
+-- Generation Time: Feb 27, 2017 at 03:39 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -42,10 +42,11 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `user_id`, `account_name`, `account_no`, `bank_name`, `account_type`, `created_at`, `updated_at`) VALUES
-(1, '1', 'ddeqqW', '987988968756767765671', 'ITCC', 'SAVINGG', '2017-02-20 18:30:00', '2017-02-25 04:25:07'),
 (2, '2', 'ss', '2121', 'RTF', 'savi', '2017-02-25 07:48:32', '2017-02-25 07:48:32'),
 (12, '3', 'erew', '43242', '34343', 'SAVINGG', '2017-02-25 08:03:51', '2017-02-25 08:03:51'),
-(13, '4', 'Bdfsds', '432422352', '3434323523', 'SAVINGG', '2017-02-25 08:03:51', '2017-02-25 08:03:51');
+(13, '4', 'Bdfsds', '432422352', '3434323523', 'SAVINGG', '2017-02-25 08:03:51', '2017-02-25 08:03:51'),
+(16, '6', 'wqrqw', '2352352', 'ITCC', 'SAVINGG', '2017-02-27 08:09:53', '2017-02-27 08:09:53'),
+(17, '1', 'AccName', '866969999889', 'ITT', 'SAVINGG', '2017-02-27 09:09:05', '2017-02-27 09:09:05');
 
 -- --------------------------------------------------------
 
@@ -71,8 +72,12 @@ CREATE TABLE `help_match` (
 --
 
 INSERT INTO `help_match` (`help_id`, `sender_id`, `receiver_id`, `amount`, `proof`, `receiver_ack`, `sender_ack`, `status`, `closed_on`, `created_on`) VALUES
-(1, 3, 1, 2500, NULL, NULL, NULL, 1, NULL, '2017-02-26 19:24:59'),
-(2, 4, 1, 2500, '1488132828_img1.jpg', NULL, NULL, 1, NULL, '2017-02-26 23:49:37');
+(1, 3, 1, 2500, '1488199680_V_for_Vendetta.jpg', 1, NULL, 2, '2017-02-27 12:50:16', '2017-02-27 18:20:16'),
+(2, 4, 1, 2500, '1488132828_img1.jpg', 1, NULL, 2, '2017-02-27 12:31:08', '2017-02-27 18:01:08'),
+(3, 1, 2, 2500, '1488201935_img1.jpg', 1, NULL, 2, '2017-02-27 13:25:48', '2017-02-27 18:55:48'),
+(4, 3, 2, 2500, '1488201965_img1.jpg', 1, NULL, 2, '2017-02-27 13:26:23', '2017-02-27 18:56:23'),
+(5, 2, 1, 2500, NULL, NULL, NULL, 1, NULL, '2017-02-27 19:38:45'),
+(6, 6, 1, 2500, NULL, NULL, NULL, 1, NULL, '2017-02-27 19:38:45');
 
 -- --------------------------------------------------------
 
@@ -98,10 +103,12 @@ CREATE TABLE `help_members` (
 --
 
 INSERT INTO `help_members` (`id`, `member_id`, `status`, `onProcess`, `eligible_for`, `accept_get`, `accept_get_on`, `accept_provide`, `accept_provide_on`, `last_updated`) VALUES
-(2, 1, 2, 1, 2, 1, '2017-02-26 10:37:51', 1, '2017-02-26 09:18:52', '2017-02-26 19:24:59'),
-(3, 2, 2, 0, 2, 1, '2017-02-26 11:10:20', 1, '2017-02-26 10:47:36', '2017-02-26 16:40:20'),
-(10, 3, 1, 1, NULL, NULL, NULL, 1, '2017-02-26 10:53:37', '2017-02-26 19:24:59'),
-(11, 4, 1, 1, NULL, NULL, NULL, 1, '2017-02-26 10:54:10', '2017-02-26 19:24:59');
+(2, 1, 2, 1, 2, 1, '2017-02-27 14:11:05', 1, '2017-02-27 12:52:48', '2017-02-27 19:41:05'),
+(3, 2, 1, 1, 0, 0, NULL, 1, '2017-02-27 13:28:31', '2017-02-27 19:38:45'),
+(10, 3, 2, 0, 2, NULL, NULL, 1, '2017-02-26 10:53:37', '2017-02-27 18:56:23'),
+(11, 4, 2, 0, 2, 1, '2017-02-27 12:45:09', 1, '2017-02-26 10:54:10', '2017-02-27 18:15:09'),
+(12, 6, 1, 1, NULL, NULL, NULL, 1, '2017-02-27 13:40:06', '2017-02-27 19:38:45'),
+(13, 5, 1, 0, NULL, NULL, NULL, 1, '2017-02-27 13:41:13', '2017-02-27 19:11:13');
 
 -- --------------------------------------------------------
 
@@ -150,7 +157,7 @@ CREATE TABLE `users` (
   `phoneno` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remail` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `role` tinyint(1) NOT NULL,
+  `role` tinyint(1) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -162,10 +169,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `phoneno`, `password`, `remail`, `role`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'test1', 'TEst', 'test@gmail.com', '', '$2y$10$Hwp17VbdkExnjKD70WD/RO1b4FVX05Rb/wiY8D4.jzVe3aaLepCW6', NULL, 1, 1, 'eZ3gwfXurGKaZCg41nYn9U17QxyU5zhqUZBRF8OvveWzAvWz78L7XVbxLcqu', '2017-02-18 05:31:02', '2017-02-18 05:31:02'),
+(1, 'test1', 'TEst', 'test@gmail.com', '', '$2y$10$Hwp17VbdkExnjKD70WD/RO1b4FVX05Rb/wiY8D4.jzVe3aaLepCW6', NULL, 1, 1, '7rr3ylZsCFKUYCTWmleTZsFZqv8Vd08t5jwZP6sj6Pz9wC8Si8spURaHzeKh', '2017-02-18 05:31:02', '2017-02-18 05:31:02'),
 (2, 'test 2', 'Test', 'test1@gmail.com', '2323232323', '$2y$10$1pMhEMmdT9DuHjYOsJlZJutOMHD7ETWYjZ3QhLDgxJHczHBAcFTnC', NULL, 0, 2, '5ERwxKWyURaqZtr0Sg8Fz3joVwLzxQI0sz5EPMA6Q941K2tFBCvdPvAr9Xey', '2017-02-18 06:42:43', '2017-02-18 06:42:43'),
-(3, 'test 3', 'tt', 'test2@gmail.com', '7193575738', '$2y$10$VHbe2qe.m.Tgj2TQrpKeE.YiG9BBJEuZWzAr6VqhGXB8pjVuxCy9i', NULL, 0, 1, 'EZ8FwItaSPTjZfCHaQRhb7rlglefAqOOje2lgw6e1qGjXTegB77uQgAgblFi', '2017-02-18 07:21:22', '2017-02-18 07:21:22'),
-(4, 'Test 4', 'Test user', 'test3@gmail.com', '7193575738', '$2y$10$oggHafk6M6hFU/WQhpMq1.VvFySEEChXAllZiBLQJBM81MxLsNuTW', 'test2@gmail.com', 0, 1, '9RCgWdyXNJ5JxCNOqcWlMErGwWLcOf9FiY0hz5wOggIqdXZo1bRP8ENzyOsA', '2017-02-18 07:26:59', '2017-02-18 07:26:59');
+(3, 'test 3', 'tt', 'test2@gmail.com', '7193575738', '$2y$10$VHbe2qe.m.Tgj2TQrpKeE.YiG9BBJEuZWzAr6VqhGXB8pjVuxCy9i', NULL, 0, 1, 'swzOAzV6NCGKBQ87wBNLmUPDW88cqxeAEXB2xcTaa6iKakpLajnEXFJZaBeG', '2017-02-18 07:21:22', '2017-02-18 07:21:22'),
+(4, 'Test 4', 'Test user', 'test3@gmail.com', '7193575738', '$2y$10$oggHafk6M6hFU/WQhpMq1.VvFySEEChXAllZiBLQJBM81MxLsNuTW', 'test2@gmail.com', 0, 1, '5tWneD5W6Cmydym0EvmzSy43nllQ1bL1aq61ZVH2eNJl9oscI4E5ez4Bdxcc', '2017-02-18 07:26:59', '2017-02-18 07:26:59'),
+(5, 'test 5', 'test 5', 'test5@gkmail.com', '979879879989', '$2y$10$gaVzmfuP/C4Hosjb/as.TOCoZ47qNYKtd.R07TRJq9WHi2o147rwa', 'test1@gmail.com', 0, 1, 'E98ZtbzNdAMEe48DEErIM74uJCqr5kQLhO5tNFqjcLCA8wdOaXm529QMuETV', '2017-02-27 08:02:44', '2017-02-27 08:02:44'),
+(6, 'test 6', 'test 6', 'test6@gmail.com', '98678989798', '$2y$10$n/zYiEaudorOc4ZZNAiheePk67N7xDJZlwvJIW5IfgXzTUX83ZsXS', 'test1@gmail.com', 0, 1, 'YcVjkMrl363MGmv9Obbjen73OekL0TTlRKSMVzJMgrfQdGTNs3rPi7U76QNb', '2017-02-27 08:08:28', '2017-02-27 08:08:28');
 
 --
 -- Indexes for dumped tables
@@ -219,17 +228,17 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `help_match`
 --
 ALTER TABLE `help_match`
-  MODIFY `help_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `help_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `help_members`
 --
 ALTER TABLE `help_members`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `migrations`
 --
@@ -239,7 +248,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

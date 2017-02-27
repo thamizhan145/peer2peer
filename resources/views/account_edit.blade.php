@@ -10,7 +10,7 @@
                 </div>
                 <div class="panel-body">
 
-                <div ng-show="account_form">
+                <div>
                         <form class="form-horizontal"  method="post" role="form" action="/account/update">
                         {{ csrf_field() }}
 

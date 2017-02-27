@@ -12,7 +12,12 @@
                 <div class="col-md-8 col-md-offset-2">
 
 
-                    @if(!$d['isAcceptProvidedHelp'])
+                    @if($d['currentStatus'] == 2)
+                        <p>
+                            You have provided the help.
+                            <h2>You are eligible to get the help now!</h2>
+                        </p>
+                    @elseif(!$d['isAcceptProvidedHelp'])
                         
                         <div class="alert alert-info">
                             <strong>Note :</strong>Please be sure that you have the money you Pledging ready because You may be matched the Next morning.
@@ -25,10 +30,6 @@
                             <button type="submit" class="btn btn-primary btn-lg" role="button">Submit</button>
                             <button class="btn btn-default btn-lg" role="button">Cancel</button>
                         </form>
-
-                        
-                        
-
 
                     @elseif(count($d['helpMatchProvide']))
                         <p>Provide Youe help to the following member !,<br />
@@ -61,21 +62,23 @@
 
                                 @if($v->proof=='')
                                 <form action="/uploadProof" method="post" enctype="multipart/form-data">
-                                {{csrf_field()}}
+                                    {{csrf_field()}}
 
-                                <input type="hidden" name="help_id" value="{{$v->help_id}}">
+                                    <input type="hidden" name="help_id" value="{{$v->help_id}}">
 
-                                <div class="form-group">
-                                    <label for="file_proof">Upload the Proof:</label>
-                                    
-                                    <input id="file_proof" accept=".jpg,.png" class="form-control" type="file" name="file_proof" required="">
-                                </div>
-                                    
-                                <div class="form-group">
-                                    <button type="submit" ng-click="uploadForm()" class="btn btn-info">Upload</button>
-                                </div>
-                                    
+                                    <div class="form-group">
+                                        <label for="file_proof">Upload the Proof:</label>
+                                        
+                                        <input id="file_proof" accept=".jpg,.png" class="form-control" type="file" name="file_proof" required="">
+                                    </div>
+                                        
+                                    <div class="form-group">
+                                        <button type="submit" ng-click="uploadForm()" class="btn btn-info">Upload</button>
+                                    </div>
+                                        
                                 </form>
+                                @elseif($v->proof)
+                                    <a target="_blank" href="/proofimages/{{$v->proof}}">View Receipt</a>
                                 @endif
 
 

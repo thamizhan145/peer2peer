@@ -35,8 +35,9 @@ class AccountController extends Controller
     }
 
     public function add(Request $request)
-    {   
+    {
 
+        $kk = $request->session();
         $user = $request->session()->get('user');
 
         $this->validate($request, [
@@ -47,7 +48,6 @@ class AccountController extends Controller
         ]);
 
         $request['user_id'] = $user['id'];
-
         Account::create($request->all());
 
         $acc = DB::table('accounts')->where('user_id',$user['id'])->first();

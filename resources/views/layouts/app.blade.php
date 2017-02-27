@@ -53,7 +53,7 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
-
+                            <li><a href="/">Dashboard</a></li>
                             <li><a href="/account">Account</a></li>
                             <li><a href="/gethelp">Get Help</a></li>
                             <li><a href="/providehelp">Provide Help</a></li>

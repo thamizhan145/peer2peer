@@ -9,7 +9,7 @@
                     <h3>Account Info</h3>
                 </div>
                 <div class="panel-body">
-                <div class="col-md-8 col-md-offset-2"  ng-show="account_info">
+                <div class="col-md-8 col-md-offset-2">
                     <p><strong>Account Name : </strong><span>{{$acc->account_name}}</span></p>
                     <p><strong>Account No : </strong><span>{{$acc->account_no}}</span></p>
                     <p><strong>Account Type : </strong><span>{{$acc->account_type}}</span></p>

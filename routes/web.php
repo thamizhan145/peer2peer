@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'ListController@show');
+Route::get('/', 'HelpController@index');
 
 Route::get('/got', [
   'middleware' => ['auth'],
@@ -22,7 +22,7 @@ Route::get('/got', [
 
 
 Auth::routes();
-Route::get('/home', 'HomeController@index');
+Route::get('/home', 'HelpController@index');
 
 // Account
 Route::get('/account', 'AccountController@index');
@@ -43,6 +43,10 @@ Route::get('/providehelp', 'HelpController@providehelp');
 
 Route::post('/acceptProvideHelp', 'HelpController@acceptProvideHelp');
 Route::post('/makeMemberToGetHelp', 'HelpController@makeMemberToGetHelp');
+Route::post('/ackTheHelp', 'HelpController@ackTheHelp');
+Route::post('/acceptGetHelp', 'HelpController@acceptGetHelp');
+
+
 
 
 // Matching
