@@ -321,15 +321,79 @@ class HelpController extends Controller {
     }
 
 
+    public function ackTheHelp()
+    {
+        $help_id = $req->get('help_id');
+        $sender_id = $req->get('sender_id');
+        
+        // From Session    
+        $user = $req->session()->get('user');
+        $receiver_id = $user['id'];
+
+        $where = [
+            'receiver_id' => $receiver_id,
+            'help_id' => $help_id
+        ];
+
+        $update = [
+            'receiver_ack' => 1,
+            'status' => 2,
+            'closed_on' => date('Y-m-d H:i:s')
+        ];
+
+        $upd_rec = DB::table('help_match')
+            ->where($where)
+            ->update($update);
+        
+        var_dump($upd);
 
 
-	public function angpost() {
-		// Getting all post data
-		if(Session::token() == Input::get('_token')){
-			$data = Input::all();
-			print_r($data);die;
-		}
-	}
+        // Check Here This member GET help completed.
+        // If yes - Make him as fresh member
+
+        $where = ['receiver_id' => $receiver_id, 'status'=>1];
+        $selectHelp = DB::table('help_match')
+                        ->where($where)
+                        ->get();
+
+        if(count($selectHelp)){
+            // Member Still Have Help
+
+        }else{
+            // Member Received all the Help
+            $where = ['member_id' => $receiver_id];
+            $update = [
+                'onProcess' => 0, 
+                'accept_get' => 0, 
+                'accept_get_on' => NULL, 
+                'accept_provide' => 0, 
+                'accept_provide_on' => NULL, 
+                'status'=> 0, 
+                'eligible_for' => 0
+                ]
+
+            $upd_rec = DB::table('help_members')
+                        ->where($where)
+                        ->update($update);
+        }
+
+        // Complete this help
+        if($upd_rec){
+            //Provie Help is over, Make the sender ID to Get Help
+            $where = ['member_id' => $sender_id];
+            $update = ['onProcess' => 0, 'status'=> 2, 'eligible_for' => 2]
+
+            $upd_rec = DB::table('help_members')
+                        ->where($where)
+                        ->update($update);
+        }
+        
+
+        exit;
+
+    }
+
+
 
 
     public function acceptProvideHelp(Request $request)
@@ -341,22 +405,51 @@ class HelpController extends Controller {
                         ->where('member_id', $user['id'])
                         ->get();
         $userData = [
-        		'status' => 1,
-        		'accept_provide' => 1,
-				'accept_provide_on' => date('Y-m-d H:i:s', time())
-			];
+                'status' => 1,
+                'accept_provide' => 1,
+                'accept_provide_on' => date('Y-m-d H:i:s', time())
+            ];
 
         if(count($Data)){
-        	DB::table('help_members')
-		            ->where('id', $user['id'])
-		            ->update($userData);
+            DB::table('help_members')
+                    ->where('id', $user['id'])
+                    ->update($userData);
         }else{
-        	//Do Insert
-        	$userData['member_id'] = $user['id'];
-        	DB::table('help_members')->insert($userData);
+            //Do Insert
+            $userData['member_id'] = $user['id'];
+            DB::table('help_members')->insert($userData);
         }
 
         return redirect('providehelp');
+
+    }
+
+
+    public function acceptGetHelp(Request $request)
+    {
+
+
+        $user = $request->session()->get('user');
+        $Data = DB::table('help_members')        
+                        ->where('member_id', $user['id'])
+                        ->get();
+        $userData = [
+                'status' => 1,
+                'accept_get' => 1,
+                'accept_get_on' => date('Y-m-d H:i:s', time())
+            ];
+
+        if(count($Data)){
+            DB::table('help_members')
+                    ->where('id', $user['id'])
+                    ->update($userData);
+        }else{
+            //Do Insert
+            $userData['member_id'] = $user['id'];
+            DB::table('help_members')->insert($userData);
+        }
+
+        return redirect('gethelp');
 
     }
 
