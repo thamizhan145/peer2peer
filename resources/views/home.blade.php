@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h2>Dashboard</h2>
@@ -68,10 +68,27 @@
             @endif
             </div>
         </div>
+
+        <div class="col-md-3">
+            
+            <div class="panel panel-default">
+              <!-- Default panel contents -->
+              <div class="panel-heading">
+                  <h3>Testimonials</h3>
+              </div>
+              <!-- List group -->
+              <ul class="list-group">
+                @foreach($d['tm'] as $k=>$v)
+                    <li class="list-group-item">{{$v->content}}</li>
+                @endforeach
+              </ul>
+            </div>
+
+        </div>
     </div>
-<pre>
+<!-- <pre>
     {{print_r($d)}}
 </pre>
-
+ -->
 </div>
 @endsection

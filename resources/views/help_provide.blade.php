@@ -28,7 +28,7 @@
                         <form method="post" action="/acceptProvideHelp">
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-primary btn-lg" role="button">Submit</button>
-                            <button class="btn btn-default btn-lg" role="button">Cancel</button>
+                            <a href="/home" class="btn btn-default btn-lg">Cancel</a>
                         </form>
 
                     @elseif(count($d['helpMatchProvide']))
@@ -102,10 +102,10 @@
             </div>
         </div>
     </div>
-
-<pre>
-{{print_r($d)}}
+<!-- <pre>
+    {{print_r($d)}}
 </pre>
+ -->
 
 </div>
 @endsection

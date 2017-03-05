@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+    'driver' => env('MAIL_DRIVER', 'mailgun'),
 
     /*
     |--------------------------------------------------------------------------
@@ -118,6 +118,10 @@ return [
         'paths' => [
             resource_path('views/vendor/mail'),
         ],
+    ],
+    'mailgun' => [
+        'domain' => 'sandbox2297710d74f14b868feeae8a9d9c569b.mailgun.org',
+        'secret' => 'key-b23f687c8c09152f981963c4b7c5c469',
     ],
 
 ];

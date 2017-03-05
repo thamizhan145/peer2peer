@@ -27,13 +27,26 @@ class UserController extends Controller
         $users = User::all();
         return view('users_list',['u' => $users->toArray()]);
         */
-        $users = DB::table('users')->paginate(2);
-        return view('users_list', ['u' => $users]);
+        $users = DB::table('users')->get();
+        return view('users_list', ['u' => $users->toArray()]);
 
     }
 
 
-    
+    public function addTestimonial(Request $req)
+    {
 
+        $user = $req->session()->get('user');
+
+        $InData = [
+            "content" => $req->get('msg'),
+            "member_id" => $user['id'],
+            "help_id" => $req->get('hid'),
+        ];
+
+        $users = DB::table('testimonial')->insert($InData);
+
+        return ["success" =>$users];
+    }
 
 }

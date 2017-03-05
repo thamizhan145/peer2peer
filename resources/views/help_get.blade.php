@@ -23,7 +23,8 @@
                         <form method="post" action="/acceptGetHelp">
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-primary btn-lg" role="button">Submit</button>
-                            <button class="btn btn-default btn-lg" role="button">Cancel</button>
+                            
+                            <a href="/home" class="btn btn-default btn-lg">Cancel</a>
                         </form>
 
 
@@ -32,7 +33,6 @@
                         <p>List the Members Here,<br />
                         <div class="row">
                         @foreach($d['helpMatchGet'] as $k=>$v)
-                        
 
                             <div class="col-md-4">
                                 <div class="panel panel-info" >
@@ -45,39 +45,43 @@
                                             PHONE NUMBER : {{$v->phoneno}}<br />                
                                         </p>
 
-                                        <div>                                        
-                                            @if($v->proof)
-                                                <a target="_blank" href="/proofimages/{{$v->proof}}">View Receipt</a>
+                    <div>                                        
+                        @if($v->proof)
+                            <a target="_blank" href="/proofimages/{{$v->proof}}">View Receipt</a>
 
-                                                @if($v->receiver_ack == 0)
-                                                    <div>
+                            @if($v->receiver_ack == 0)
+                            <div>
 
-                            <form action="/ackTheHelp" method="POST">
-                                {{csrf_field()}}
+                                <form action="/ackTheHelp" method="POST">
+                                    {{csrf_field()}}
 
-                                <input type="hidden" name="sender_id" value="{{$v->sender_id}}">
-                                <input type="hidden" name="help_id" value="{{$v->help_id}}">
-                                                                
-                                Did you receive the money ?
-                                <button type="submit" class="btn btn-info">Yes</button>
-                                <button type="button" class="btn btn-default">No</button>
-                            </form>
+                                    <input type="hidden" name="sender_id" value="{{$v->sender_id}}">
+                                    <input type="hidden" name="help_id" value="{{$v->help_id}}">
+                                                                    
+                                    Did you receive the money ?
+                                    <input type="submit" name="submit" class="btn btn-info" value="Yes">
+                                    <input type="submit" name="submit" class="btn btn-default" value="No">
+                                </form>
 
-                                                </div>
-                                                @elseif($v->receiver_ack == 1)
-                                                    <div class="alert alert-success">
-                                                        <span>You have confirmed</span>
-                                                    </div>
-                                                @elseif($v->receiver_ack == 2)
-                                                    <div class="alert alert-danger">
-                                                        <span>You have Declined!</span>
-                                                    </div>
-                                                @endif
+                            </div>
+                            @elseif($v->status == 2)
+                                <div class="alert alert-success">
+                                    <span>You have confirmed</span>
 
-                                            @else
-                                                <p>Receipt Not Yet Uploaded!</p>
-                                            @endif
-                                        </div>
+                                    
+                                </div>
+                                <a href="#" data-toggle="modal" onClick="setHelp({{ $v->help_id }})" data-target="#testimonial" title="Make this member to get help">Write Testimonial</a>
+
+                            @elseif($v->status == 3)
+                                <div class="alert alert-danger">
+                                    <span>You have Declined!</span>
+                                </div>
+                            @endif
+
+                        @else
+                            <p>Receipt Not Yet Uploaded!</p>
+                        @endif
+                    </div>
 
                                     </div>
                                 </div>                        
@@ -104,10 +108,48 @@
         </div>
     </div>
 
-    <pre>
-    {{print_r($d)}}
-    </pre>
 
+<!-- Modal -->
+<div class="modal fade" id="testimonial" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Write your testimonial</h4>
+      </div>
+      <div class="modal-body">
+
+        <form id="form_Testimo" class="form-group">
+            {{csrf_field()}}
+            <input type="hidden" name="hid" id="hid">
+
+            <div class="form-group">
+                <textarea class="form-control" name="msg" id="msg" rows="3" cols="10" required="" minlength="10"></textarea>
+            </div>
+
+
+
+            <div class="form-group">
+                <button type="submit" id="addTestimonial" class="btn btn-primary">Submit</button>                
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+
+                <span style="display: none;"  class="alert alert-success" role="alert" id="Msg_Sucess">Added Successfully!!</span>
+                <span style="display: none;"   class="alert alert-danger" role="alert" id="Msg_Failure">Please Try again later !!</span>
+                
+
+            </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+ <!-- <pre>
+    {{print_r($d)}}
+</pre>
+ -->
 
 </div>
 @endsection

@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -65,7 +66,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+
+        $inVal = User::create([
             'fname' => $data['fname'],
             'lname' => $data['lname'],
             'email' => $data['email'],
@@ -73,5 +75,25 @@ class RegisterController extends Controller
             'phoneno' => $data['phoneno'],
             'remail' => $data['remail'],
         ]);
+
+        if(!empty($data['remail'])){
+            $this->addReferrals($data['remail'], $inVal->id);
+        }
+
+        return $inVal;
+
+    }
+
+    public function addReferrals($email, $uid)
+    {
+        $refMem = DB::table('users')
+                        ->select('id')
+                        ->where('email', $email)
+                        ->get();
+        $user = $refMem->toArray();
+        if(count($user)){
+            $inData = ['member_id' => $user[0]->id, 'ref_id' => $uid];
+            DB::table('referrals')->insert($inData);
+        }
     }
 }

@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'HelpController@index');
+Route::get('/', 'HomeController@index');
 
 Route::get('/got', [
   'middleware' => ['auth'],
@@ -34,6 +34,11 @@ Route::get('/account/edit', 'AccountController@edit');
 // User
 Route::get('/users', 'UserController@index');
 
+Route::get('/usersmail', 'UserController@usersmail');
+Route::post('/addTestimonial', 'UserController@addTestimonial');
+
+
+
 
 // GetHelp
 Route::get('/gethelp', 'HelpController@gethelp');
@@ -51,7 +56,7 @@ Route::post('/acceptGetHelp', 'HelpController@acceptGetHelp');
 
 // Matching
 Route::get('/matching', 'HelpController@matching');
-Route::get('/MatchUser', 'HelpController@MatchUser');
+Route::post('/MatchUser', 'HelpController@MatchUser');
 
 Route::post('/uploadProof', 'HelpController@uploadProof');
 

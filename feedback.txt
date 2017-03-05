@@ -1,0 +1,24 @@
+1. Proof --> NO
+	* Get the detail of the trx & Complaint
+	* Mail to support
+2. Assign 1 help -> if 1 trx goes wrong.
+3. Terms & Condition page
+
+4. Auto Matching. ---> PENDING
+5. Write testimonial.
+6. Cancle - to dashboard.
+7. Referrer Logic. ---> PENDING
+
+6. Auto-suspended ---> If member not paid , Also remove the refferals.
+	----->  CRON
+
+
+1. Search box - to filter the members in list.
+2. Choose No.of to GET ----> Assign by admin.
+3. User must accept the Terms&Condition --> before Admin Match
+4. Suspended - Show only one page. link to write a msg to support.
+
+
+
+MAIL --> Configure.
+CRON --> Auto Suspended.

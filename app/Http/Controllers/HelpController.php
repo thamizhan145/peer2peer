@@ -24,12 +24,29 @@ class HelpController extends Controller {
     public function index(Request $request)
     {
         $user = $request->session()->get('user');
+
+        
         $resp = $this->analysisHelp($user['id']);
 
-         $resp['acc'] = $this->checkAccount($user['id']);
+        $resp['acc'] = $this->checkAccount($user['id']);
 
+        $resp['tm'] = $this->getTestimonial();
+        
         return view('home', ['d' => $resp]);
     }
+
+
+
+    public function getTestimonial()
+    {
+        $Data = DB::table('testimonial')        
+                ->where('isDeleted', NULL)
+                ->limit(5)
+                ->get();
+
+        return $Data->toArray();        
+    }
+
 
     public function checkAccount($uid)
     {
@@ -47,16 +64,17 @@ class HelpController extends Controller {
 		$resp = ['Success' => 0];
 		$user = $request->session()->get('user');
 
-		$uid = $request->get('id');
+        $uid = $request->get('uid');
+        $Nofhelp = $request->get('Nofhelp');
 
-        if($user['role'] == 1){
+        if($user['role'] == 1 && $uid > 0){
 
 	        $Data = DB::table('help_members')        
 	                        ->where('member_id', $uid)
 	                        ->get();
 	        $userData = [
 	        		'status' => 2,
-	        		'eligible_for' => 2,
+	        		'eligible_for' => $Nofhelp,
 	        		'accept_get' => 1,
 					'accept_get_on' => date('Y-m-d H:i:s', time())
 				];
@@ -77,7 +95,11 @@ class HelpController extends Controller {
 	        	//Do Insert
 	        	DB::table('help_members')->insert($userData);
 	        }
-	        $resp['Success']=1; 
+	        $resp['Success'] = 1; 
+        }else{
+
+            $resp['Success'] = 0; 
+
         }
 
         echo json_encode(['d' => $resp]);
@@ -115,7 +137,7 @@ class HelpController extends Controller {
                     // Condition
                     $provide_condi = [
                         ['sender_id', $uid],
-                        ['help_match.status' , 1]
+                        // ['help_match.status' , 1]
                     ];
                     $helpMatchProvide = DB::table('help_match')
                                         ->join('accounts', 'help_match.receiver_id', '=', 'accounts.user_id')
@@ -131,7 +153,7 @@ class HelpController extends Controller {
                     // Condition
                     $get_condi = [
                         ['receiver_id', $uid],
-                        ['help_match.status' , 1]
+                        // ['help_match.status' , 1]
                     ];
                     $helpMatchGet = DB::table('help_match')
                                     ->join('users', 'help_match.sender_id', '=', 'users.id')
@@ -206,9 +228,9 @@ class HelpController extends Controller {
 
     public function MatchUser(Request $req)
     {
-        echo "<pre>";
-        $pro = $req->get('provide_user');
-        $get = $req->get('get_user');
+
+        $pro = $req->get('p');
+        $get = $req->get('g');
 
         $arrPro = explode(',', $pro);
         $arrGet = explode(',', $get);
@@ -219,12 +241,10 @@ class HelpController extends Controller {
         }
 
         $res = $this->fixMatch($MatchArr);
-
         $arrAll = array_merge($arrPro,$arrGet);
-
         $res_prcss = $this->markProcess($arrAll);
 
-        return redirect('matching');
+        return ['Success' => 1];
 
     }
 
@@ -342,13 +362,11 @@ class HelpController extends Controller {
 
     }
 
+    
 
-    public function ackTheHelp(Request $req)
-    {
-        $help_id = $req->get('help_id');
-        $sender_id = $req->get('sender_id');
-        
-        // From Session
+    public function makeComplaint(){
+
+        // From Session    
         $user = $req->session()->get('user');
         $receiver_id = $user['id'];
 
@@ -356,66 +374,153 @@ class HelpController extends Controller {
             'receiver_id' => $receiver_id,
             'help_id' => $help_id
         ];
-
         $update = [
+            'complaint' => 1,
+        ];
+
+        $upd = DB::table('help_match')
+            ->where($where)
+            ->update($update);
+    }
+
+    public function checkAvailReferals($uid)
+    {
+        $where2 = ['member_id' => $uid, 'status'=>0, 'is_paid'=>1];
+        $selectRef = DB::table('referrals')
+        ->where($where2)
+        ->get();
+        if(count($selectRef) >= 5){
+            // Add +1 to the get help
+            return true;
+        }
+        return false;
+    }
+
+    public function removeAllReferral($uid)
+    {
+     
+        // Suspend the receiver account.
+        $update = ['is_rejected'=>1];
+        $where = [' member_id'=>$uid];
+        $upd_user = DB::table('referrals')
+                        ->where($where)
+                        ->update($update);   
+    }
+
+
+    public function ackTheHelp(Request $req)
+    {
+        $help_id = $req->get('help_id');
+        $sender_id = $req->get('sender_id');
+        
+        $submit = $req->get('submit');
+
+        $flag = ($submit == 'Yes')?2:3;
+
+        // From Session
+        $user = $req->session()->get('user');
+        $receiver_id = $user['id'];
+
+        $where1 = [
+            'receiver_id' => $receiver_id,
+            'help_id' => $help_id
+        ];
+
+        $update1 = [
             'receiver_ack' => 1,
-            'status' => 2,
+            'status' => $flag,
             'closed_on' => date('Y-m-d H:i:s')
         ];
 
-        $upd_rec = DB::table('help_match')
-            ->where($where)
-            ->update($update);
+        $upd_rec1 = DB::table('help_match')
+            ->where($where1)
+            ->update($update1);
         
-        var_dump($upd_rec);
+        var_dump($upd_rec1);
+
+        $upd_rec = false;
+        if($flag == 2){
+
+            // Check Here This member GET help completed.
+            // If yes - Make him as fresh member
+
+            $where2 = ['receiver_id' => $receiver_id, 'status'=>1];
+            $selectHelp = DB::table('help_match')
+                            ->where($where2)
+                            ->get();
+
+            if(count($selectHelp)){
+                // Member Still Have Help
+
+            }else{
+                // Member Received all the Help
+                $where3 = ['member_id' => $receiver_id];
+                $update3 = [
+                    'onProcess' => 0, 
+                    'accept_get' => 0, 
+                    'accept_get_on' => NULL, 
+                    'accept_provide' => 0, 
+                    'accept_provide_on' => NULL, 
+                    'status'=> 0, 
+                    'eligible_for' => 0
+                    ];
+
+                $upd_rec = DB::table('help_members')
+                            ->where($where3)
+                            ->update($update3);
+            }
+
+            // Complete this help
+            if($upd_rec){
+                //Provie Help is over, Make the sender ID to Get Help
+                $where4 = ['member_id' => $sender_id];
+                $update4 = ['onProcess' => 0, 'status'=> 2, 'eligible_for' => 2];
+
+                $upd_Help_mem = DB::table('help_members')
+                            ->where($where4)
+                            ->update($update4);
+
+                var_dump($upd_Help_mem);
 
 
-        // Check Here This member GET help completed.
-        // If yes - Make him as fresh member
+                // This is valid help, Make the member is_pain in referrals
+                $referrals_update = DB::table('referrals')
+                            ->where('ref_id'=> $sender_id)
+                            ->update(['is_paid'=>1]);
 
-        $where = ['receiver_id' => $receiver_id, 'status'=>1];
-        $selectHelp = DB::table('help_match')
-                        ->where($where)
-                        ->get();
-
-        if(count($selectHelp)){
-            // Member Still Have Help
-
+                var_dump($referrals_update);
+            }
+            
         }else{
-            // Member Received all the Help
-            $where = ['member_id' => $receiver_id];
-            $update = [
-                'onProcess' => 0, 
-                'accept_get' => 0, 
-                'accept_get_on' => NULL, 
-                'accept_provide' => 0, 
-                'accept_provide_on' => NULL, 
-                'status'=> 0, 
-                'eligible_for' => 0
-                ];
 
-            $upd_rec = DB::table('help_members')
-                        ->where($where)
-                        ->update($update);
+            // Suspend the receiver account.
+            // $update5 = ['status'=>2];
+            // $where5 = ['id'=>$sender_id];
+            // $upd_user = DB::table('users')
+            //                 ->where($where5)
+            //                 ->update($update5);
+            
+            $this->suspendAccount($sender_id);
+
         }
 
-        // Complete this help
-        if($upd_rec){
-            //Provie Help is over, Make the sender ID to Get Help
-            $where = ['member_id' => $sender_id];
-            $update = ['onProcess' => 0, 'status'=> 2, 'eligible_for' => 2];
-
-            $upd_Help_mem = DB::table('help_members')
-                        ->where($where)
-                        ->update($update);
-
-            var_dump($upd_Help_mem);
-        }
-        
-
-       return redirect('gethelp');
+        return redirect('gethelp');
 
     }
+
+
+
+    public function suspendAccount($uid)
+    {
+        
+        // Suspend the receiver account.
+        $update = ['status'=>2];
+        $where = ['id'=>$uid];
+        $upd_user = DB::table('users')
+                        ->where($where)
+                        ->update($update);
+    }
+
 
 
 
@@ -460,10 +565,12 @@ class HelpController extends Controller {
         // print_r($Data);
         // exit;
 
+        $isRefAvl = $this->checkAvailReferals($user['id']);
 
+        $nofhelp = ($isRefAvl == true)?3:2;
 
         $userData = [
-                'status' => 2,
+                'status' => $nofhelp,
                 'accept_get' => 1,
                 'accept_get_on' => date('Y-m-d H:i:s', time())
             ];
@@ -471,7 +578,7 @@ class HelpController extends Controller {
         if(count($Data)){
             // Update
             // echo "Update";
-            $uu = DB::table('help_members')
+            $res = DB::table('help_members')
                     ->where('member_id', $user['id'])
                     ->update($userData);
 
@@ -481,9 +588,13 @@ class HelpController extends Controller {
             // echo "Insert";
 
             $userData['member_id'] = $user['id'];
-            $ui = DB::table('help_members')->insert($userData);
+            $res = DB::table('help_members')->insert($userData);
 
             // var_dump($ui);
+        }
+
+        if($res){
+            $this->closeRefs($user['id']);
         }
 
         // echo "Here";
@@ -492,6 +603,16 @@ class HelpController extends Controller {
 
         return redirect('gethelp');
 
+    }
+
+    public function closeRefs($uid)
+    {
+        
+        $upData = ["status" => 1];
+        $res = DB::table('referrals')
+                ->where('member_id', $uid)
+                ->limit(5)
+                ->update($upData);
     }
 
 

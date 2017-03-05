@@ -19,7 +19,7 @@
 
 		                        @foreach($d['Get'] as $k=>$v)
 		                        	<p class="line-brk">
-                					<input class="get"  type="checkbox" value="{{$v->member_id}}">
+                					<input class="get" name="get" data-c="{{$v->eligible_for}}" type="checkbox" value="{{$v->member_id}}">
                 					{{title_case($v->fname)}} {{title_case($v->lname)}} ({{$v->eligible_for}})
                 					</p>
                 				@endforeach
@@ -36,7 +36,7 @@
 		                        @foreach($d['Provide'] as $k=>$v)
 
 		                        <p class="line-brk">
-                					<input class="provide" type="checkbox" value="{{$v->member_id}}">
+                					<input class="provide" name="provide" type="checkbox" value="{{$v->member_id}}">
                 					{{title_case($v->fname)}} {{title_case($v->lname)}}
                 				</p>
                 				@endforeach
@@ -47,28 +47,25 @@
 		            </div>
 
 		            <div class="form-group">
-		            	<form post="POST" action="/MatchUser">
+		            	<form name="MatchingForm">
 		            		{{csrf_field()}}
 
-		            		<input type="text" id="provide_user" name="provide_user">
-		            		<input type="text" id="get_user" name="get_user">
-
-		            		<button type="submit" class="btn btn-primary">Match</button>
-		            		<button type="reset" class="btn btn-default">Reset</button>
+		            		<!-- <input type="text" id="provide_user" name="provide_user">
+		            		<input type="text" id="get_user" name="get_user"> -->
+		            		<button type="button" id="MatchUsrM" class="btn btn-primary">Match</button>
+		            		<!-- <button type="reset" class="btn btn-default">Reset</button> -->
 		            	</form>
 		            </div>
 		            <div class="panel-body">
 
 
-                	<div>
-                		<h3 style="color: green;display: none;" id="MHSuccessMsg"> Get Help Success! </h3>
-                		<h3 style="color: red;display: none;" id="MHFailureMsg"> Get Help Failure! </h3>
-                	</div>    
+		        <span style="display: none;"  class="alert alert-success" role="alert" id="MHSuccessMsg">Help Matched Success!</span>
+				<span style="display: none;"   class="alert alert-danger" role="alert" id="MHFailureMsg">Problem with Assign Help!!</span>
                 	
-
+<!-- 
                 	<pre>
                 		{{print_r($d)}}	
-                	</pre>
+                	</pre> -->
  					
 					 
 
