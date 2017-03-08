@@ -13,6 +13,9 @@
 
 Route::get('/', 'HomeController@index');
 
+Route::get('/mailCheck', 'HomeController@mailCheck');
+
+
 Route::get('/got', [
   'middleware' => ['auth'],
   'uses' => function () {

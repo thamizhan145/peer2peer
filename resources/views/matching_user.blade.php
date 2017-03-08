@@ -59,8 +59,8 @@
 		            <div class="panel-body">
 
 
-		        <span style="display: none;"  class="alert alert-success" role="alert" id="MHSuccessMsg">Help Matched Success!</span>
-				<span style="display: none;"   class="alert alert-danger" role="alert" id="MHFailureMsg">Problem with Assign Help!!</span>
+		        <span style="display: none;"  class="alert alert-success" role="alert" id="Msg_Sucess">Help Matched Success!</span>
+				<span style="display: none;"   class="alert alert-danger" role="alert" id="Msg_Sucess">Problem with Assign Help!!</span>
                 	
 <!-- 
                 	<pre>

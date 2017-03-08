@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderShipped;
 
 class HomeController extends Controller
 {
@@ -31,5 +33,26 @@ class HomeController extends Controller
             return view('terms_condit');
         }
         
+    }
+
+    public function mailCheck()
+    {
+        $user = [
+                "email" => "sakthivel@redblacktree.com", 
+                "name" => "sakthivel@redblacktree.com"
+            ];
+            
+        $kk = Mail::to($user)->send(new OrderShipped());
+
+
+        echo "var :";
+        var_dump($kk);
+
+        echo "print :";
+
+        print_r($kk);
+
+        exit;
+
     }
 }

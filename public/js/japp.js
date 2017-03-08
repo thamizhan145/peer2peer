@@ -185,10 +185,14 @@ $(document).on('click','#MatchUsrM', function() {
 
 		        if(data['Success']){
 		        	$('#Msg_Sucess').show();
+		        	setTimeout(function() {
+		        		location.reload();	
+		        	}, 3000);
+
+		        	
 		        }else{
 		        	$('#Msg_Failure').show();
 		        }
-
 		    }
 		});		
 	}else{

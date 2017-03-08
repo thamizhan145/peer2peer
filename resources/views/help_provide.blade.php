@@ -81,6 +81,11 @@
                                     <a target="_blank" href="/proofimages/{{$v->proof}}">View Receipt</a>
                                 @endif
 
+                                @if($v->status == 2)
+                                    <span class="alert alert-success">
+                                        <strong>This Help is accepted!</strong>
+                                    </span>
+                                @endif
 
                                  
 
@@ -104,8 +109,8 @@
     </div>
 <!-- <pre>
     {{print_r($d)}}
-</pre>
- -->
+</pre> -->
+
 
 </div>
 @endsection

@@ -471,7 +471,7 @@ class HelpController extends Controller {
             }
 
             // Complete this help
-            if($upd_rec){
+            if($flag == 2){
                 //Provie Help is over, Make the sender ID to Get Help
                 $where4 = ['member_id' => $sender_id];
                 $update4 = ['onProcess' => 0, 'status'=> 2, 'eligible_for' => 2];
@@ -483,9 +483,9 @@ class HelpController extends Controller {
                 var_dump($upd_Help_mem);
 
 
-                // This is valid help, Make the member is_pain in referrals
+                // This is valid help, Make the member is_paid in referrals
                 $referrals_update = DB::table('referrals')
-                            ->where('ref_id'=> $sender_id)
+                            ->where(['ref_id' => $sender_id])
                             ->update(['is_paid'=>1]);
 
                 var_dump($referrals_update);
