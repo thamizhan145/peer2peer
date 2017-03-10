@@ -40,7 +40,8 @@ Route::get('/users', 'UserController@index');
 Route::get('/usersmail', 'UserController@usersmail');
 Route::post('/addTestimonial', 'UserController@addTestimonial');
 
-
+Route::post('/activateAccount', 'UserController@activateAccount');
+Route::post('/suspendAccount', 'UserController@suspendAccount');
 
 
 // GetHelp
@@ -62,6 +63,12 @@ Route::get('/matching', 'HelpController@matching');
 Route::post('/MatchUser', 'HelpController@MatchUser');
 
 Route::post('/uploadProof', 'HelpController@uploadProof');
+
+Route::post('/autoMatch', 'HelpController@autoMatch');
+
+
+
+
 
 
 //Images

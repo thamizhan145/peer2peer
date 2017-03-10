@@ -49,4 +49,45 @@ class UserController extends Controller
         return ["success" =>$users];
     }
 
+
+    // Only to admin session
+    public function suspendAccount(Request $req)
+    {
+        $user = $req->session()->get('user');
+
+        if($req->get('uid') != $user['id'] && $user['role'] == 1){
+            $userData = ['status'=>2];
+            DB::table('users')
+                        ->where('id', $req->get('uid'))
+                        ->update($userData);
+        }
+
+        return redirect('users');
+    }
+
+    // Only to admin session
+    public function activateAccount(Request $req)
+    {
+        
+        $user = $req->session()->get('user');
+
+        if($req->get('uid') != $user['id'] && $user['role'] == 1){
+            $userData = ['status'=>1];
+            DB::table('users')
+                        ->where('id', $req->get('uid'))
+                        ->update($userData);
+        }
+
+        return redirect('users');
+    }
+
+    // Not Used
+    public function deleteAccount(Request $req)
+    {
+        $userData = ['isDeleted'=>1];
+        DB::table('users')
+                    ->where('id', $req->get('uid'))
+                    ->update($userData);
+        return redirect('users');
+    }
 }

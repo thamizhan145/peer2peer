@@ -49,12 +49,15 @@
 		            <div class="form-group">
 		            	<form name="MatchingForm">
 		            		{{csrf_field()}}
-
-		            		<!-- <input type="text" id="provide_user" name="provide_user">
-		            		<input type="text" id="get_user" name="get_user"> -->
 		            		<button type="button" id="MatchUsrM" class="btn btn-primary">Match</button>
-		            		<!-- <button type="reset" class="btn btn-default">Reset</button> -->
 		            	</form>
+						
+						<form name="autoMatchingForm" method="post" action="/autoMatch">
+		            		{{csrf_field()}}
+		            		<button type="submit" class="btn btn-success">Auto Match</button>
+		            	</form>
+
+
 		            </div>
 		            <div class="panel-body">
 

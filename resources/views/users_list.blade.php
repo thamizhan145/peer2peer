@@ -39,19 +39,31 @@
 							    	@elseif($user->status == '2')
 							    		<label class="label label-warning">Suspended</label>
 							    	@endif
-
-							    	{{ $user->status }}
 						    	</td>
 				                <td>
 				                	<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" onClick="setuser({{ $user->id }})" data-target="#myModal" title="Make this member to get help">Get</button>
 				                </td>
 				                <td>
 					                @if($user->status == '1')
-								    	<button class="btn btn-xs btn-warning">De-Activate</button>
+					                	<form method="post" action="/suspendAccount">
+					                		{{csrf_field()}}
+					                		<input type="hidden" name="uid" value="{{$user->id}}">
+					                		<button type="submit" class="btn btn-xs btn-warning">De-Activate</button>
+					                	</form>
+								    	
 								    @elseif($user->status == '2')
-								    	<button class="btn btn-xs btn-success">Activate</button>
+								    	<form method="post" action="/activateAccount">
+					                		{{csrf_field()}}
+					                		<input type="hidden" name="uid" value="{{$user->id}}">
+					                		<button type="submit" class="btn btn-xs btn-success">Activate</button>
+					                	</form>
 								    @endif
-							    	<button class="btn btn-xs btn-danger">Delete</button>
+
+							    	<!-- <form method="post" action="/deleteAccount">
+				                		{{csrf_field()}}
+				                		<input type="hidden" name="uid" value="{{$user->id}}">
+				                		<button type="submit" class="btn btn-xs btn-danger">Delete</button>
+				                	</form> -->
 							    </td>
 				            </tr>
 				            @endforeach

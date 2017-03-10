@@ -67,7 +67,7 @@ class HelpController extends Controller {
         $uid = $request->get('uid');
         $Nofhelp = $request->get('Nofhelp');
 
-        if($user['role'] == 1 && $uid > 0){
+        if($user['role'] == 1 && $uid){
 
 	        $Data = DB::table('help_members')        
 	                        ->where('member_id', $uid)
@@ -273,8 +273,11 @@ class HelpController extends Controller {
     public function fixMatch($Members)
     {
 
+        $user_eligible = array();
         foreach ($Members as $key => $d) {
-            
+
+            $user_eligible[$d['r_id']][] = $d;
+
             $MatchData[] = [
                 'sender_id' => $d['s_id'],
                 'receiver_id' => $d['r_id'],
@@ -283,39 +286,86 @@ class HelpController extends Controller {
             ];
         }
 
+        foreach ($user_eligible as $user_id => $v) {
+
+            // Run update query based on the No.of Help
+            // echo "User : ".$user_id;
+            // echo "\n";
+
+            $eligible_tot = count($v);
+            DB::table('help_members')->where('member_id', $user_id)
+                                    ->update([
+                                        'eligible_for' => DB::raw('eligible_for - '.$eligible_tot)
+                                        ]);
+
+
+            // Receiver Set Process
+            // Check the number of Help Count with - If matched make process 1                
+            $UserVal = DB::table('help_members')
+                        ->select('eligible_for')
+                        ->where('member_id', $user_id)
+                        ->get();
+
+            $UserArr = $UserVal->toArray();
+            if(count($UserArr)){
+                if($UserArr[0]->eligible_for == 0){
+                    $res_prcss = $this->markProcess([$user_id]);
+                }
+            }
+
+            // Sender Process 1 For the provider 
+            $sender_ids = array_column($v, 's_id');
+            if(count($sender_ids)){
+                
+                $this->markProcess($sender_ids);
+            }
+        }
+
         $mId = DB::table('help_match')->insert($MatchData);
 
         return $mId;
     }
 
 
-    public function autoMatch()
+    public function autoMatch(Request $req)
     {
-        $arrAll = $this->getAllValidMembers();
 
-        $arrMatchNow = array();
-        $j = 0;
-        foreach ($arrAll['get'] as $k1 => $v1) {
+        $user = $req->session()->get('user');
 
-            // No.Of Help
-            $count = $v1['eligible_for'];
-            for ($i=1; $i <= $count; $i++) { 
-                
-                if(isset($arrAll['Provide'][$i])){
+        if($user['role'] == 1){
+
+            $arrAll = $this->getAllValidMembers();
+            // echo "<pre>";
+            // print_r($arrAll);
+
+            $arrMatchNow = array();
+            $j = 0;
+            foreach ($arrAll['Get'] as $k1 => $v1) {
+
+                // No.Of Help
+                $count = $v1->eligible_for;
+                for ($i=0; $i < $count; $i++) {
                     
-                    $sender_id = $arrAll['Provide'][$j]['member_id'];
-                    $receiver_id = $v1['member_id'];                
-                    
-                    $arrMatchNow[] = array('s_id'=>$sender_id, 'r_id' => $receiver_id);
-                    $j++;
-                }else{
-                    return $arrMatchNow;
+                    if(isset($arrAll['Provide'][$j])){
+                        
+                        $sender_id = $arrAll['Provide'][$j]->member_id;
+                        $receiver_id = $v1->member_id;                
+                        
+                        $arrMatchNow[] = array('s_id'=>$sender_id, 'r_id' => $receiver_id);
+                        $j++;
+                    }
                 }
-                
             }
         }
 
-        return $arrMatchNow;
+        if(count($arrMatchNow)){
+
+            $this->fixMatch($arrMatchNow);
+        }
+
+        // print_r($arrMatchNow);
+        // exit;
+        return redirect('matching');
     }
 
 
