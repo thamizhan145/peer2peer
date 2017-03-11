@@ -11,10 +11,10 @@
     <title>{{ config('app.name', '1helpzone') }}</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
-    <link href="/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="/css/responsive.bootstrap.min.css" rel="stylesheet">
-    <link href="/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="/public/css/app.css" rel="stylesheet">
+    <link href="/public/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="/public/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="/public/css/dataTables.bootstrap.min.css" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -101,26 +101,26 @@
     </div>
     
     <!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
-    <script src="/js/jquery-1.12.4.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/jquery.dataTables.min.js"></script>
-    <script src="/js/dataTables.bootstrap.min.js"></script>
-    <script src="/js/dataTables.responsive.min.js"></script>
-    <script src="/js/responsive.bootstrap.min.js"></script>
+    <script src="/public/js/jquery-1.12.4.js"></script>
+    <script src="/public/js/bootstrap.min.js"></script>
+    <script src="/public/js/jquery.dataTables.min.js"></script>
+    <script src="/public/js/dataTables.bootstrap.min.js"></script>
+    <script src="/public/js/dataTables.responsive.min.js"></script>
+    <script src="/public/js/responsive.bootstrap.min.js"></script>
 
-    <script src="/js/japp.js"></script>
+    <script src="/public/js/japp.js"></script>
 
     <!-- Scripts -->
     <!-- <script src="/js/app.js"></script> -->
 
-    <script type="text/javascript" src="/js/angular.min.js"></script>
-    <script type="text/javascript" src="/js/dirPagination.js"></script>
-    <script type="text/javascript" src="/js/ngDialog.min.js"></script>
-    <script type="text/javascript" src="/js/spin.min.js"></script>
-    <script type="text/javascript" src="/js/angular-spinner.min.js"></script>
-    <script type="text/javascript" src="/js/angular-loading-spinner.js"></script>
+    <script type="text/javascript" src="/public/js/angular.min.js"></script>
+    <script type="text/javascript" src="/public/js/dirPagination.js"></script>
+    <script type="text/javascript" src="/public/js/ngDialog.min.js"></script>
+    <script type="text/javascript" src="/public/js/spin.min.js"></script>
+    <script type="text/javascript" src="/public/js/angular-spinner.min.js"></script>
+    <script type="text/javascript" src="/public/js/angular-loading-spinner.js"></script>
 
-    <script type="text/javascript" src="/js/ctlr/help.js"></script>
-    <script type="text/javascript" src="/js/app-ng.js"></script>
+    <script type="text/javascript" src="/public/js/ctlr/help.js"></script>
+    <script type="text/javascript" src="/public/js/app-ng.js"></script>
 </body>
 </html>

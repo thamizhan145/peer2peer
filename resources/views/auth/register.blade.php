@@ -93,7 +93,7 @@
                             <label for="remail" class="col-md-4 control-label">ReferrerE-Mail</label>
 
                             <div class="col-md-6">
-                                <input id="remail" type="email" class="form-control" name="remail" value="{{ old('remail') }}" required>
+                                <input id="remail" type="email" class="form-control" name="remail" value="{{ old('remail') }}">
 
                                 @if ($errors->has('remail'))
                                     <span class="help-block">

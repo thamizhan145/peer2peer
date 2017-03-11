@@ -6,18 +6,18 @@
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3>Get Help</h3>
+                    <h3>Get help</h3>
                 </div>
                 <div class="panel-body">
+                    
                 
+
                     @if(!$d['isAcceptProvidedHelp'] && !$d['currentStatus'])
-                        <p class="alert alert-warning">
-                            To get help,<br />You need to provide the help to some one.
-                        </p>
+                        <p>To get help,<br />You need to provide the help to some one.</p>
                         <a href="/providehelp" class="btn btn-primary btn-lg">Provide Help</a>
 
                     @elseif(!$d['isAcceptGetHelp'])
-                        <p class="alert alert-info">By clicking the Submit button,<br />
+                        <p>By clicking the Submit button,<br />
                         I confirm that I agree with the Terms and conditions of This community. Else, Click the Cancel button to exit.</p>
 
                         <form method="post" action="/acceptGetHelp">
@@ -93,9 +93,9 @@
                         </p>
 
                     @elseif(count($d['helpMatchGet']) == 0)
-
-                        <p class="alert alert-info">Your get help request has been submitted, please wait patiently as the system pairs you with participants that will pay you.</p>
-
+                        <p>Yet to find the match !,<br />
+                            <h3>Pls Wait!</h3>
+                        </p>
                     @endif
 
 
