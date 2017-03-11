@@ -532,7 +532,6 @@ class HelpController extends Controller {
 
                 var_dump($upd_Help_mem);
 
-
                 // This is valid help, Make the member is_paid in referrals
                 $referrals_update = DB::table('referrals')
                             ->where(['ref_id' => $sender_id])
@@ -543,14 +542,14 @@ class HelpController extends Controller {
             
         }else{
 
-            // Suspend the receiver account.
-            // $update5 = ['status'=>2];
-            // $where5 = ['id'=>$sender_id];
-            // $upd_user = DB::table('users')
-            //                 ->where($where5)
-            //                 ->update($update5);
-            
+            // Suspend the receiver account.          
             $this->suspendAccount($sender_id);
+
+            // Add +1 to the received account
+            DB::table('help_members')->where('member_id', $receiver_id)
+                                    ->update([
+                                        'eligible_for' => DB::raw('eligible_for + 1')
+                                        ]);
 
         }
 
@@ -620,8 +619,11 @@ class HelpController extends Controller {
         $nofhelp = ($isRefAvl == true)?3:2;
 
         $userData = [
-                'status' => $nofhelp,
+                'status' => 2,
+                'eligible_for' =>$nofhelp,
                 'accept_get' => 1,
+                'accept_provide' => 0,
+                'accept_provide_on' => NULL,
                 'accept_get_on' => date('Y-m-d H:i:s', time())
             ];
 
