@@ -32,6 +32,7 @@
                     @elseif(count($d['helpMatchGet']))
                         <p>List the Members Here,<br />
                         <div class="row">
+
                         @foreach($d['helpMatchGet'] as $k=>$v)
 
                             <div class="col-md-4">
@@ -70,8 +71,9 @@
 
                                     
                                 </div>
-                                <a href="#" data-toggle="modal" onClick="setHelp({{ $v->help_id }})" data-target="#testimonial" title="Make this member to get help">Write Testimonial</a>
-
+                                
+                                <!-- <a href="#" data-toggle="modal" onClick="setHelp({{ $v->help_id }})" data-target="#testimonial" title="Make this member to get help">Write Testimonial</a>
+ -->
                             @elseif($v->status == 3)
                                 <div class="alert alert-danger">
                                     <span>You have Declined!</span>
@@ -145,11 +147,11 @@
     </div>
   </div>
 </div>
-
- <!-- <pre>
+<!-- 
+ <pre>
     {{print_r($d)}}
-</pre>
- -->
+</pre> -->
+
 
 </div>
 @endsection

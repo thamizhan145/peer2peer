@@ -90,6 +90,38 @@ $(document).on('click','#getHelp', function() {
 
 });
 
+
+
+$(document).on('click','#submit_sus', function() {
+	console.log('On Click !!');
+
+	var ReqData = {
+		"_token": window.Laravel['csrfToken'],
+		"uid": $("#Uid").val(),
+		"msg": $("#msg").val()
+	};
+
+	$.ajax({
+	    url: '/mailToSupport',
+	    type: 'POST',
+	    data: ReqData,
+	    dataType: 'JSON',
+	    success: function (data) {
+	        console.log(data);
+
+	        if(data['d']['Success']){
+	        	$('#Msg_Sucess').show();
+	        }else{
+	        	$('#Msg_Failure').show();
+	        }
+
+	    }
+	});
+
+});
+
+
+
 function rmEle(arr,val) {
 
 	var index = arr.indexOf(val);

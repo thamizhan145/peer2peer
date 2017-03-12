@@ -94,6 +94,44 @@
                 <span>Your account get suspended!</span>
                 <br>
                 <span>Please Contact Support!</span>
+                <span>
+                    <a type="button" data-toggle="modal" onClick="setuser({{ Auth::user()->id }})" data-target="#suspended_model" title="Send Email to Support" style="cursor: pointer;">Send Email</a>
+                </span>
+            </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="suspended_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Mail to Support</h4>
+                  </div>
+                  <div class="modal-body">
+
+                    <form class="form-group">
+                        {{csrf_field()}}
+                        <input type="hidden" name="Uid" id="Uid">
+                        <label for="msg">Your Message</label>
+                        <div class="form-group">
+                            <textarea id="msg" class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="button" id="submit_sus" class="btn btn-primary">Submit</button>                
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+
+                            <span style="display: none;"  class="alert alert-success" role="alert" id="Msg_Sucess">Mail Successfully!!</span>
+                            <span style="display: none;"   class="alert alert-danger" role="alert" id="Msg_Failure">Problem with Sending E-Mail!!</span>
+                        </div>
+
+
+                    </form>
+                  </div>
+
+                </div>
+              </div>
             </div>
         @else
             @yield('content')

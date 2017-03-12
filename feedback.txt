@@ -35,3 +35,6 @@ Your public key has been saved in /home/nichips12/.ssh/id_rsa.pub.
 The key fingerprint is:
 b0:45:a7:a1:27:67:27:cb:ac:fd:1e:90:59:6b:e3:2b 
 The key's randomart image is:
+
+
+ALTER TABLE `help_members` ADD `allow_to_write` TINYINT NOT NULL DEFAULT '0' AFTER `accept_provide_on`;

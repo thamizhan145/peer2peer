@@ -15,6 +15,9 @@ Route::get('/', 'HomeController@index');
 
 Route::get('/mailCheck', 'HomeController@mailCheck');
 
+// Mail to support
+Route::post('/mailToSupport', 'UserController@mailToSupport');
+
 
 Route::get('/got', [
   'middleware' => ['auth'],

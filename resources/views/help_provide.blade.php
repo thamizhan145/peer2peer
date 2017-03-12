@@ -38,22 +38,30 @@
                                         <a href="/home" class="btn btn-default btn-lg">Cancel</a>
                                     </form>                                
                                 </div>
-
-
                             </div>
 
-
-
                         @elseif(count($d['helpMatchProvide']))
-                            <p>Provide Youe help to the following member !,<br />
+
+                            <p>Provide Your help to the following member !,<br />
                                 <h3>Upload the Proof!</h3>
                             </p>
 
                             @foreach($d['helpMatchProvide'] as $k=>$v)
 
-                            <div class="panel panel-info">
+                                @if($v->status == 2)
+                                    <div class="panel panel-success">
+                                @elseif($v->status == 3)
+                                    <div class="panel panel-danger">
+                                @else
+                                    <div class="panel panel-info">
+                                @endif
+
                                 <div class="panel-heading">
-                                    <h4 class="panel-title">Your Match</h4>
+                                    <h4 class="panel-title">Your Match
+                                        @if($v->status != 1)
+                                             - This help is Over
+                                        @endif
+                                    </h4>
                                 </div>
                                 <div class="panel-body">
 
@@ -99,9 +107,6 @@
                                             <strong>This Help is accepted!</strong>
                                         </span>
                                     @endif
-
-                                     
-
                                 </div>
                             </div>
                             @endforeach
@@ -122,10 +127,11 @@
             </div>
         </div>
     </div>
+
 <!-- <pre>
     {{print_r($d)}}
-</pre> -->
-
+</pre>
+ -->
 
 </div>
 @endsection

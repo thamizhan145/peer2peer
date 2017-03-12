@@ -79,7 +79,10 @@
               <!-- List group -->
               <ul class="list-group">
                 @foreach($d['tm'] as $k=>$v)
-                    <li class="list-group-item">{{$v->content}}</li>
+                    <li class="list-group-item">
+                        <p>{{$v->content}}</p> 
+                        <span><i> - {{$v->fname}} {{$v->lname}}</i></span>   
+                    </li>
                 @endforeach
               </ul>
             </div>

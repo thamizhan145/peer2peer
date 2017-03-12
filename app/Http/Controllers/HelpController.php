@@ -40,6 +40,8 @@ class HelpController extends Controller {
     public function getTestimonial()
     {
         $Data = DB::table('testimonial')        
+                ->join('users', 'users.id', '=', 'testimonial.member_id')
+                ->select('users.fname', 'users.lname', 'testimonial.*')
                 ->where('isDeleted', NULL)
                 ->limit(5)
                 ->get();
@@ -74,7 +76,7 @@ class HelpController extends Controller {
 	                        ->get();
 	        $userData = [
 	        		'status' => 2,
-	        		'eligible_for' => $Nofhelp,
+                    'eligible_for' => $Nofhelp,
 	        		'accept_get' => 1,
 					'accept_get_on' => date('Y-m-d H:i:s', time())
 				];
@@ -144,6 +146,7 @@ class HelpController extends Controller {
                                         ->join('users', 'help_match.receiver_id', '=', 'users.id')
                                         ->select('users.fname','users.lname','users.phoneno','help_match.*', 'accounts.*')
                                         ->where($provide_condi)
+                                        ->orderBy('id', 'desc')
                                         ->get();
 
                     $helpMatchProvide = $helpMatchProvide->toArray();
@@ -159,6 +162,7 @@ class HelpController extends Controller {
                                     ->join('users', 'help_match.sender_id', '=', 'users.id')
                                     ->select('users.fname','users.lname','users.phoneno','help_match.*')
                                     ->where($get_condi)
+                                    ->orderBy('id', 'desc')
                                     ->get();
 
                     $helpMatchGet = $helpMatchGet->toArray();
@@ -512,7 +516,8 @@ class HelpController extends Controller {
                     'accept_provide' => 0, 
                     'accept_provide_on' => NULL, 
                     'status'=> 0, 
-                    'eligible_for' => 0
+                    'eligible_for' => 0,
+                    'allow_to_write' => 1
                     ];
 
                 $upd_rec = DB::table('help_members')
@@ -524,7 +529,11 @@ class HelpController extends Controller {
             if($flag == 2){
                 //Provie Help is over, Make the sender ID to Get Help
                 $where4 = ['member_id' => $sender_id];
-                $update4 = ['onProcess' => 0, 'status'=> 2, 'eligible_for' => 2];
+                $update4 = [
+                    'onProcess' => 0, 
+                    'status'=> 2, 
+                    'eligible_for' => 2
+                ];
 
                 $upd_Help_mem = DB::table('help_members')
                             ->where($where4)
@@ -544,6 +553,23 @@ class HelpController extends Controller {
 
             // Suspend the receiver account.          
             $this->suspendAccount($sender_id);
+
+            // suspended account - 
+            // SET this memner to Fresh member
+            $where5 = ['member_id' => $sender_id];
+            $update5 = [
+                'onProcess' => 0, 
+                'accept_get' => 0, 
+                'accept_get_on' => NULL, 
+                'accept_provide' => 0, 
+                'accept_provide_on' => NULL, 
+                'status'=> 0, 
+                'eligible_for' => 0
+            ];
+
+            $upd_Help_mem = DB::table('help_members')
+                        ->where($where5)
+                        ->update($update5);
 
             // Add +1 to the received account
             DB::table('help_members')->where('member_id', $receiver_id)
@@ -569,9 +595,6 @@ class HelpController extends Controller {
                         ->where($where)
                         ->update($update);
     }
-
-
-
 
 
     public function acceptProvideHelp(Request $request)

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\User;
+use App\Mail\SuspendedMember;
 
 class UserController extends Controller
 {
@@ -90,4 +92,39 @@ class UserController extends Controller
                     ->update($userData);
         return redirect('users');
     }
+
+
+
+    // Mail to Suport
+    public function mailToSupport(Request $req)
+    {
+        $ToUser = [
+            "email" => "s.sakthivel589@gmail.com", 
+            "name" => "s.sakthivel589@gmail.com"
+        ];
+
+        $Req = [
+            'uid' => $req->get('uid'),
+            'msg' => $req->get('msg')
+            ];
+
+        $mailDet = new SuspendedMember($Req);
+        $mailDet->msg = $req->get('msg');
+
+        $kk = Mail::to($ToUser)->send($mailDet);
+
+
+        echo "var :";
+        var_dump($kk);
+
+        echo "print :";
+
+        print_r($kk);
+
+        exit;
+
+    }
+
+
+
 }
