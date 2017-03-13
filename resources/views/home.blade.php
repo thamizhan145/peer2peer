@@ -20,10 +20,10 @@
                         <h4>You Need to Provide the help to GET help</h4>
                     @elseif($d['currentStatus'] == 2)
 
-                        @if(count($d['helpMatchGet']))
+                        @if(count($d['helpMatchGet_current']))
                             <h4>Approve the help!</h4>
                             <ul>
-                                @foreach($d['helpMatchGet'] as $k=>$v)
+                                @foreach($d['helpMatchGet_current'] as $k=>$v)
                                     <li>
                                         <a href="/gethelp">{{$v->fname}} {{$v->lname}}</a>
                                     </li>
@@ -42,10 +42,10 @@
                         <h4>You Need to Provide the help to GET help</h4>
                     @elseif($d['currentStatus'] == 1)
                         
-                        @if(count($d['helpMatchProvide']))
+                        @if(count($d['helpMatchProvide_current']))
                             <h4>Provide the help!</h4>
                             <ul>
-                                @foreach($d['helpMatchProvide'] as $k=>$v)
+                                @foreach($d['helpMatchProvide_current'] as $k=>$v)
                                     <li>
                                         <a href="/providehelp">{{$v->fname}} {{$v->lname}}</a>
                                     </li>

@@ -113,26 +113,28 @@ class HelpController extends Controller {
 
         $users = DB::table('help_members')->where('member_id', $uid)->first();
 
-        // print_r($users);
-        // exit;
-
         $isAcceptGetHelp = false;
         $isAcceptProvidedHelp = false;
         $currentStatus = 0;
         $helpMatchGet = array(); 
         $helpMatchProvide = array();
 
+        $currentG = array();
+        $completedG = array();
+        $currentP = array();
+        $completedP = array();
+        
         if($users){
 
             $isAcceptProvidedHelp = ($users->accept_provide)?true:false;
             $isAcceptGetHelp = ($users->accept_get)?true:false;
 
-            if($isAcceptGetHelp || $isAcceptProvidedHelp){
+            // if($isAcceptGetHelp || $isAcceptProvidedHelp){
 
                 $currentStatus = $users->status;
 
                 // 1-Provide 2-Get
-                if($currentStatus == 1){
+                // if($currentStatus == 1){
                     // Member is Ready to provide help
                     // Check the help_match table IF any match assigned.
 
@@ -147,11 +149,24 @@ class HelpController extends Controller {
                                         ->select('users.fname','users.lname','users.phoneno','help_match.*', 'accounts.*')
                                         ->where($provide_condi)
                                         ->orderBy('id', 'desc')
-                                        ->get();
-
+                                        ->get();                    
                     $helpMatchProvide = $helpMatchProvide->toArray();
 
-                }elseif ($currentStatus == 2) {
+
+                    if(count($helpMatchProvide)){
+                        // Split the Runing | Completed help Here 
+                        foreach ($helpMatchProvide as $k => $v) {
+                            if($v->status == 1){
+                                $currentP[] = $v;
+                            }else{
+                                $completedP[] = $v;
+                            }
+                        }
+                    }
+
+
+
+                // }elseif ($currentStatus == 2) {
 
                     // Condition
                     $get_condi = [
@@ -166,8 +181,21 @@ class HelpController extends Controller {
                                     ->get();
 
                     $helpMatchGet = $helpMatchGet->toArray();
-                }
-            }
+
+                    if(count($helpMatchGet)){
+                        // Split the Runing | Completed help Here 
+                        foreach ($helpMatchGet as $k => $v) {
+                            if($v->status == 1){
+                                $currentG[] = $v;
+                            }else{
+                                $completedG[] = $v;
+                            }
+                        }                        
+                    }
+
+
+                // }
+            // }
 
         }
 
@@ -175,8 +203,10 @@ class HelpController extends Controller {
             'isAcceptGetHelp' => $isAcceptGetHelp, 
             'isAcceptProvidedHelp' => $isAcceptProvidedHelp, 
             'currentStatus' => $currentStatus,
-            'helpMatchGet' => $helpMatchGet,
-            'helpMatchProvide' => $helpMatchProvide
+            'helpMatchGet_current' => $currentG,
+            'helpMatchGet_completed' => $completedG,
+            'helpMatchProvide_current' => $currentP,
+            'helpMatchProvide_completed' => $completedP
             ];
     }
 
@@ -208,24 +238,34 @@ class HelpController extends Controller {
     public function getAllValidMembers()
     {
 
-        // Select Both Get|Provide
-        $Match = DB::table('help_members')
-        				->join('users', 'users.id', '=', 'help_members.member_id')
-        				->select('users.fname','users.lname','users.email', 'help_members.*')
-                        ->whereIn('help_members.status', [1,2])
+        // Select Get
+        $MatchGet = DB::table('help_members')
+                        ->join('users', 'users.id', '=', 'help_members.member_id')
+                        ->select('users.fname','users.lname','users.email', 'help_members.*')
+                        ->Where('help_members.status', 2)
                         ->Where('onProcess', 0)
+                        ->Where('accept_get', 1)
+                        ->get();        
+
+        // Select Provide
+        $MatchProvide = DB::table('help_members')
+                        ->join('users', 'users.id', '=', 'help_members.member_id')
+                        ->select('users.fname','users.lname','users.email', 'help_members.*')
+                        ->Where('help_members.status', 1)
+                        ->Where('onProcess', 0)
+                        ->Where('accept_provide', 1)
                         ->get();
 
-        $arrMatch = array('Get'=>array(), 'Provide'=>array());
+        $arrMatch = array('Get'=>$MatchGet->toArray(), 'Provide'=>$MatchProvide->toArray());
 
-        foreach ($Match->toArray() as $k => $v) {
+        // foreach ($Match->toArray() as $k => $v) {
 
-            if($v->status == 2){
-                $arrMatch['Get'][] = $v;
-            }elseif($v->status == 1){
-                $arrMatch['Provide'][] = $v;
-            }
-        }
+        //     if($v->status == 2){
+        //         $arrMatch['Get'][] = $v;
+        //     }elseif($v->status == 1){
+        //         $arrMatch['Provide'][] = $v;
+        //     }
+        // }
 
         return $arrMatch;
     }
@@ -495,35 +535,55 @@ class HelpController extends Controller {
         $upd_rec = false;
         if($flag == 2){
 
-            // Check Here This member GET help completed.
-            // If yes - Make him as fresh member
-
-            $where2 = ['receiver_id' => $receiver_id, 'status'=>1];
-            $selectHelp = DB::table('help_match')
-                            ->where($where2)
+            // Checek the eligible for 
+            // It should be  0 - ZERO
+            $where6 = ['member_id' => $receiver_id];
+            $select_mem = DB::table('help_members')
+                            ->where($where6)
+                            ->select('eligible_for')
                             ->get();
 
-            if(count($selectHelp)){
-                // Member Still Have Help
 
-            }else{
-                // Member Received all the Help
-                $where3 = ['member_id' => $receiver_id];
-                $update3 = [
-                    'onProcess' => 0, 
-                    'accept_get' => 0, 
-                    'accept_get_on' => NULL, 
-                    'accept_provide' => 0, 
-                    'accept_provide_on' => NULL, 
-                    'status'=> 0, 
-                    'eligible_for' => 0,
-                    'allow_to_write' => 1
-                    ];
+            if(count($select_mem)) {
 
-                $upd_rec = DB::table('help_members')
-                            ->where($where3)
-                            ->update($update3);
+                $select_mem = $select_mem->toArray();
+                if($select_mem[0]->eligible_for == 0){
+
+                    // Check Here This member GET help completed.
+                    // If yes - Make him as fresh member
+
+                    $where2 = ['receiver_id' => $receiver_id, 'status'=>1];
+                    $selectHelp = DB::table('help_match')
+                                    ->where($where2)
+                                    ->get();
+
+                    if(count($selectHelp)){
+                        // Member Still Have Help
+
+                    }else{
+                        // Member Received all the Help
+                        $where3 = ['member_id' => $receiver_id];
+                        $update3 = [
+                            'onProcess' => 0, 
+                            'accept_get' => 0, 
+                            'accept_get_on' => NULL, 
+                            'accept_provide' => 0, 
+                            'accept_provide_on' => NULL, 
+                            'status'=> 0, 
+                            'eligible_for' => 0,
+                            'allow_to_write' => 1
+                            ];
+
+                        $upd_rec = DB::table('help_members')
+                                    ->where($where3)
+                                    ->update($update3);
+                    }
+
+
+                }
             }
+
+            
 
             // Complete this help
             if($flag == 2){
