@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" id="body_container">
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
@@ -71,9 +71,7 @@
 
                                     
                                 </div>
-                                
-                                <!-- <a href="#" data-toggle="modal" onClick="setHelp({{ $v->help_id }})" data-target="#testimonial" title="Make this member to get help">Write Testimonial</a>
- -->
+
                             @elseif($v->status == 3)
                                 <div class="alert alert-danger">
                                     <span>You have Declined!</span>
@@ -94,7 +92,7 @@
                            </div> 
                         </p>
 
-                    @elseif(count($d['currentStatus']) == 1 && count($d['helpMatchProvide_current']))
+                    @elseif($d['currentStatus'] == 1)
 
                         <p class="alert alert-info">You Need to provide the Help</p>
 
@@ -154,10 +152,18 @@
                             @elseif($v->status == 2)
                                 <div class="alert alert-success">
                                     <span>You have confirmed</span>
-
-                                    
                                 </div>
-                                
+
+                                @if($v->allow_to_write == 1)
+                                    <div>
+                                        <a href="#" data-toggle="modal" onClick="setHelp({{ $v->help_id }})" data-target="#testimonial" title="Make this member to get help">Write Testimonial</a>
+                                    </div>
+                                @elseif($v->allow_to_write == 2)
+                                    <div>
+                                        <span>Testimonial Wrote!</span>
+                                    </div>
+                                @endif
+
                                 <!-- <a href="#" data-toggle="modal" onClick="setHelp({{ $v->help_id }})" data-target="#testimonial" title="Make this member to get help">Write Testimonial</a>
  -->
                             @elseif($v->status == 3)
@@ -227,10 +233,10 @@
   </div>
 </div>
 
- <pre>
+<!-- <pre>
     {{print_r($d)}}
 </pre>
-
+ -->
 
 </div>
 @endsection

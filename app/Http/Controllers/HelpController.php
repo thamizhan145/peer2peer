@@ -502,6 +502,112 @@ class HelpController extends Controller {
     }
 
 
+    public function CompleteTheHelpReceiver($receiver_id, $help_id){
+
+        // Checek the eligible for 
+        // It should be  0 - ZERO
+        $where6 = ['member_id' => $receiver_id];
+        $select_mem = DB::table('help_members')
+                        ->where($where6)
+                        ->select('eligible_for')
+                        ->get();
+
+
+        if(count($select_mem)) {
+
+            $select_mem = $select_mem->toArray();
+
+            if($select_mem[0]->eligible_for == 0){
+
+                // Check Here This member GET help completed.
+                // If yes - Make him as fresh member
+
+                $where2 = [
+                    'receiver_id' => $receiver_id, 
+                    'status'=>1
+                ];
+
+                $selectHelp = DB::table('help_match')
+                                ->where($where2)
+                                ->get();
+
+                if(count($selectHelp)){
+                    // Member Still Have Help
+
+                    echo "Members help On-Going";
+
+                }else{
+                    // Member Received - all the Help
+                    $where3 = ['member_id' => $receiver_id];
+                    $update3 = [
+                        'onProcess' => 0, 
+                        'accept_get' => 0, 
+                        'accept_get_on' => NULL, 
+                        'accept_provide' => 0, 
+                        'accept_provide_on' => NULL, 
+                        'status'=> 0, 
+                        'eligible_for' => 0
+                        ];
+
+                    $upd_rec = DB::table('help_members')
+                                ->where($where3)
+                                ->update($update3);
+
+                    $this->AllowtoWrite($receiver_id, $help_id);
+                }
+
+
+            }else{
+                echo "Member having Pending helps";
+            }
+        }
+    }
+
+    public function AllowtoWrite($receiver_id, $help_id)
+    {
+        // Allow to write testimonial - Now.
+        $where1 = [
+            'receiver_id' => $receiver_id,
+            'help_id' => $help_id
+        ];
+
+        $update1 = [
+            'allow_to_write' => 1
+        ];
+
+        $upd_rec1 = DB::table('help_match')
+            ->where($where1)
+            ->update($update1);
+
+        var_dump($upd_rec1);
+    }
+
+
+    public function CompleteTheHelpSender($sender_id)
+    {
+        
+        $where4 = ['member_id' => $sender_id];
+        $update4 = [
+            'onProcess' => 0, 
+            'status'=> 2, 
+            'eligible_for' => 2
+        ];
+
+        $upd_Help_mem = DB::table('help_members')
+                    ->where($where4)
+                    ->update($update4);
+
+        var_dump($upd_Help_mem);
+
+        // This is valid help, Make the member is_paid in referrals
+        $referrals_update = DB::table('referrals')
+                    ->where(['ref_id' => $sender_id])
+                    ->update(['is_paid'=>1]);
+
+        var_dump($referrals_update);
+
+    }
+
     public function ackTheHelp(Request $req)
     {
         $help_id = $req->get('help_id');
@@ -509,6 +615,7 @@ class HelpController extends Controller {
         
         $submit = $req->get('submit');
 
+        // Accept-2 Decline-3
         $flag = ($submit == 'Yes')?2:3;
 
         // From Session
@@ -533,116 +640,63 @@ class HelpController extends Controller {
         var_dump($upd_rec1);
 
         $upd_rec = false;
+        // On-Accept
         if($flag == 2){
 
-            // Checek the eligible for 
-            // It should be  0 - ZERO
-            $where6 = ['member_id' => $receiver_id];
-            $select_mem = DB::table('help_members')
-                            ->where($where6)
-                            ->select('eligible_for')
-                            ->get();
-
-
-            if(count($select_mem)) {
-
-                $select_mem = $select_mem->toArray();
-                if($select_mem[0]->eligible_for == 0){
-
-                    // Check Here This member GET help completed.
-                    // If yes - Make him as fresh member
-
-                    $where2 = ['receiver_id' => $receiver_id, 'status'=>1];
-                    $selectHelp = DB::table('help_match')
-                                    ->where($where2)
-                                    ->get();
-
-                    if(count($selectHelp)){
-                        // Member Still Have Help
-
-                    }else{
-                        // Member Received all the Help
-                        $where3 = ['member_id' => $receiver_id];
-                        $update3 = [
-                            'onProcess' => 0, 
-                            'accept_get' => 0, 
-                            'accept_get_on' => NULL, 
-                            'accept_provide' => 0, 
-                            'accept_provide_on' => NULL, 
-                            'status'=> 0, 
-                            'eligible_for' => 0,
-                            'allow_to_write' => 1
-                            ];
-
-                        $upd_rec = DB::table('help_members')
-                                    ->where($where3)
-                                    ->update($update3);
-                    }
-
-
-                }
-            }
-
+            // Check the eligible_for - To colse all the help & make him fresh member
+            $this->CompleteTheHelpReceiver($receiver_id, $help_id);
             
-
-            // Complete this help
-            if($flag == 2){
-                //Provie Help is over, Make the sender ID to Get Help
-                $where4 = ['member_id' => $sender_id];
-                $update4 = [
-                    'onProcess' => 0, 
-                    'status'=> 2, 
-                    'eligible_for' => 2
-                ];
-
-                $upd_Help_mem = DB::table('help_members')
-                            ->where($where4)
-                            ->update($update4);
-
-                var_dump($upd_Help_mem);
-
-                // This is valid help, Make the member is_paid in referrals
-                $referrals_update = DB::table('referrals')
-                            ->where(['ref_id' => $sender_id])
-                            ->update(['is_paid'=>1]);
-
-                var_dump($referrals_update);
-            }
+            //Provie Help is over, Make the sender ID to Get Help
+            $this->CompleteTheHelpSender($sender_id);
             
         }else{
+
+            // On-Decline
 
             // Suspend the receiver account.          
             $this->suspendAccount($sender_id);
 
             // suspended account - 
             // SET this memner to Fresh member
-            $where5 = ['member_id' => $sender_id];
-            $update5 = [
-                'onProcess' => 0, 
-                'accept_get' => 0, 
-                'accept_get_on' => NULL, 
-                'accept_provide' => 0, 
-                'accept_provide_on' => NULL, 
-                'status'=> 0, 
-                'eligible_for' => 0
-            ];
+            $this->resetTheMember($sender_id);
 
-            $upd_Help_mem = DB::table('help_members')
-                        ->where($where5)
-                        ->update($update5);
-
-            // Add +1 to the received account
-            DB::table('help_members')->where('member_id', $receiver_id)
-                                    ->update([
-                                        'eligible_for' => DB::raw('eligible_for + 1')
-                                        ]);
-
+            // Add help to mem
+            $this->incReceiverHelp($receiver_id);
         }
 
         return redirect('gethelp');
 
     }
 
+    public function incReceiverHelp($receiver_id)
+    {
+        // Add +1 to the received account
+        DB::table('help_members')->where('member_id', $receiver_id)
+                                ->update([
+                                    'eligible_for' => DB::raw('eligible_for + 1')
+                                    ]);
+    }
+
+
+    public function resetTheMember($sender_id){
+
+        $where5 = ['member_id' => $sender_id];
+        $update5 = [
+            'onProcess' => 0, 
+            'accept_get' => 0, 
+            'accept_get_on' => NULL, 
+            'accept_provide' => 0, 
+            'accept_provide_on' => NULL, 
+            'status'=> 0, 
+            'eligible_for' => 0
+        ];
+
+        $upd_Help_mem = DB::table('help_members')
+                    ->where($where5)
+                    ->update($update5);
+        var_dump($upd_Help_mem);
+
+    }
 
 
     public function suspendAccount($uid)

@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" id="body_container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+                <div class="panel-heading">
+                    <h3>Login</h3>
+                </div>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
@@ -45,7 +47,11 @@
                                 
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                 <input type="text" name="captcha" class="form-control">
-                                <img src="{{Captcha::src()}}" alt="captch">
+                                <br>
+                                <p>
+                                    <img src="{{Captcha::src()}}" alt="captch">
+                                </p>
+                                
                                 
 
                                 @if ($errors->has('captcha'))

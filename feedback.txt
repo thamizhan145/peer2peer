@@ -38,3 +38,8 @@ The key's randomart image is:
 
 
 ALTER TABLE `help_members` ADD `allow_to_write` TINYINT NOT NULL DEFAULT '0' AFTER `accept_provide_on`;
+
+ALTER TABLE `help_match` ADD `allow_to_write` TINYINT(1) NOT NULL DEFAULT '0' AFTER `closed_on`;
+
+ALTER TABLE `testimonial` ADD UNIQUE(`help_id`);
+

@@ -15,6 +15,7 @@
     <link href="/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -25,7 +26,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
 
@@ -39,7 +40,8 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', '1helpzone') }}
+                        <!-- {{ config('app.name', '1helpzone') }} -->
+                        <img style="max-width: 50%;margin-top: -10px;" src="/images/logo.png"/>
                     </a>
                 </div>
 

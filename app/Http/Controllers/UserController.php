@@ -46,9 +46,29 @@ class UserController extends Controller
             "help_id" => $req->get('hid'),
         ];
 
-        $users = DB::table('testimonial')->insert($InData);
+        $added = DB::table('testimonial')->insert($InData);
+        // var_dump($added);
 
-        return ["success" =>$users];
+
+        // Mark as Added - testimonial.
+        $where1 = [
+            'receiver_id' => $user['id'],
+            'help_id' => $req->get('hid')
+        ];
+
+        $update1 = [
+            'allow_to_write' => 2
+        ];
+
+        $upd_rec1 = DB::table('help_match')
+            ->where($where1)
+            ->update($update1);
+
+        // var_dump($upd_rec1);
+
+
+
+        return ["success" =>$added];
     }
 
 

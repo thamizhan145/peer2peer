@@ -40,6 +40,11 @@ $("#form_Testimo").submit(function(){
 	        if(data['success']){
 	        	$('#Msg_Sucess').show();
 	        	$("#msg").val('')
+
+	        	setTimeout(function() {
+	        		location.reload();
+	        	}, 3000);
+
 	        }else{
 	        	$('#Msg_Failure').show();
 	        }
