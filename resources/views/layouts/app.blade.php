@@ -39,17 +39,17 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="" href="{{ url('/') }}">
                         <!-- {{ config('app.name', '1helpzone') }} -->
-                        <img style="max-width: 50%;margin-top: -10px;" src="/images/logo.png"/>
+                        <img style="margin: 5px; max-width: 30%;" src="/images/logo.png"/>
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
+<!--                     <ul class="nav navbar-nav">
                         &nbsp;
-                    </ul>
+                    </ul> -->
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
@@ -59,7 +59,7 @@
                             <li><a href="{{ route('register') }}">Register</a></li> -->
                         @else
                             <li><a href="/">Dashboard</a></li>
-                            <li><a href="/account">Account</a></li>
+                            <!-- <li><a href="/account">Account</a></li> -->
                             <li><a href="/gethelp">Get Help</a></li>
                             <li><a href="/providehelp">Provide Help</a></li>
                             @if(Auth::user()->role)
@@ -68,10 +68,23 @@
                             @endif
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->fname }} <span class="caret"></span>
+                                    {{ ucfirst(Auth::user()->fname) }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    
+                                    <li>
+                                        <a href="/myprofile">My Profile</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/myrefs">My Referrals</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/account">My Account</a>
+                                    </li>
+
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
@@ -83,6 +96,9 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
+
+
+
                                 </ul>
                             </li>
                         @endif

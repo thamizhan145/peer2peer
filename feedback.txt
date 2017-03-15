@@ -43,3 +43,23 @@ ALTER TABLE `help_match` ADD `allow_to_write` TINYINT(1) NOT NULL DEFAULT '0' AF
 
 ALTER TABLE `testimonial` ADD UNIQUE(`help_id`);
 
+
+ALTER TABLE `referrals` ADD `paid_on` DATETIME NULL DEFAULT NULL AFTER `is_rejected`;
+ALTER TABLE `referrals` ADD `closed_on` DATETIME NULL DEFAULT NULL AFTER `paid_on`;
+ALTER TABLE `referrals` ADD `rejected_on` DATETIME NULL DEFAULT NULL AFTER `closed_on`;
+ALTER TABLE `referrals` ADD `created_on` DATETIME NULL DEFAULT NULL AFTER `rejected_on`;
+
+
+
+
+---- IMPORTANT ------
+
+TRUNCATE TABLE users;
+TRUNCATE TABLE referrals;
+TRUNCATE TABLE help_members;
+TRUNCATE TABLE help_match;
+TRUNCATE TABLE accounts;
+TRUNCATE TABLE testimonial;
+
+
+

@@ -483,7 +483,11 @@ class HelpController extends Controller {
         $selectRef = DB::table('referrals')
         ->where($where2)
         ->get();
+        
         if(count($selectRef) >= 5){
+            
+            $this->closeRefs($uid);
+            
             // Add +1 to the get help
             return true;
         }
@@ -494,7 +498,7 @@ class HelpController extends Controller {
     {
      
         // Suspend the receiver account.
-        $update = ['is_rejected'=>1];
+        $update = ['is_rejected'=>1, 'rejected_on'=>Date('Y-m-d H:i:s')];
         $where = [' member_id'=>$uid];
         $upd_user = DB::table('referrals')
                         ->where($where)
@@ -602,7 +606,7 @@ class HelpController extends Controller {
         // This is valid help, Make the member is_paid in referrals
         $referrals_update = DB::table('referrals')
                     ->where(['ref_id' => $sender_id])
-                    ->update(['is_paid'=>1]);
+                    ->update(['is_paid'=>1, 'paid_on'=>Date('Y-m-d H:i:s')]);
 
         var_dump($referrals_update);
 
@@ -782,9 +786,7 @@ class HelpController extends Controller {
             // var_dump($ui);
         }
 
-        if($res){
-            $this->closeRefs($user['id']);
-        }
+
 
         // echo "Here";
         // exit;
@@ -797,7 +799,7 @@ class HelpController extends Controller {
     public function closeRefs($uid)
     {
         
-        $upData = ["status" => 1];
+        $upData = ["status" => 1, 'closed_on'=>Date('Y-m-d H:i:s')];
         $res = DB::table('referrals')
                 ->where('member_id', $uid)
                 ->limit(5)

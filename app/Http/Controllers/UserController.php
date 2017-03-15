@@ -114,6 +114,32 @@ class UserController extends Controller
     }
 
 
+    public function myprofile(Request $req)
+    {
+        $user = $req->session()->get('user');
+
+        $myInfo = DB::table('users')
+                    ->where('id', $user['id'])
+                    ->select('fname','lname','email','phoneno','remail','role','status','created_at')
+                    ->first();
+        return view('myprofile', ['d'=>$myInfo]);
+    }
+
+    public function myrefs(Request $req)
+    {
+        $user = $req->session()->get('user');
+
+        $myRefInfo = DB::table('referrals')
+                    ->where('member_id', $user['id'])
+                    ->join('users', 'users.id', '=', 'referrals.ref_id')
+                    ->select('users.fname','users.lname','users.email','users.phoneno','referrals.*')
+                    ->orderBy('referrals.id', 'desc')
+                    ->get();
+
+        return view('myrefs', ['d'=>$myRefInfo->toArray()]);
+    }
+
+
 
     // Mail to Suport
     public function mailToSupport(Request $req)

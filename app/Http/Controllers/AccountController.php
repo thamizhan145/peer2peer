@@ -25,7 +25,9 @@ class AccountController extends Controller
     {        
         $user = $request->session()->get('user');
        
-        $acc = DB::table('accounts')->where('user_id',$user['id'])->first();
+        $acc = DB::table('accounts')
+                        ->where('user_id',$user['id'])
+                        ->first();
         
         if($acc){
             return view('account',['acc' => $acc]);
@@ -37,7 +39,6 @@ class AccountController extends Controller
     public function add(Request $request)
     {
 
-        $kk = $request->session();
         $user = $request->session()->get('user');
 
         $this->validate($request, [

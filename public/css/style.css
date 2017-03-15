@@ -324,3 +324,33 @@ body {
 #body_container{
     padding-top: 40px;
 }
+
+.navbar-nav{
+    margin: 10px;
+}
+
+.navbar-brand-custom {
+    float: left;
+    padding: 14px 15px;
+    font-size: 18px;
+    line-height: 22px;
+/*    height: 50px;*/
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+    display: inline;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover{
+    color: white !important;
+    background: none;
+    border: none;
+}.dataTables_wrapper .dataTables_paginate .paginate_button:active{
+    color: white !important;
+    background: none;
+    border: none;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+    padding: 0px;
+    border: none;
+}

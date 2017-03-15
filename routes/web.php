@@ -30,6 +30,7 @@ Route::get('/got', [
 Auth::routes();
 Route::get('/home', 'HelpController@index');
 
+
 // Account
 Route::get('/account', 'AccountController@index');
 Route::post('/account/add', 'AccountController@add');
@@ -39,6 +40,9 @@ Route::get('/account/edit', 'AccountController@edit');
 
 // User
 Route::get('/users', 'UserController@index');
+Route::get('/myprofile', 'UserController@myprofile');
+Route::get('/myrefs', 'UserController@myrefs');
+
 
 Route::get('/usersmail', 'UserController@usersmail');
 Route::post('/addTestimonial', 'UserController@addTestimonial');

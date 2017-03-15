@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/login';
+    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -95,7 +95,7 @@ class RegisterController extends Controller
                         ->get();
         $user = $refMem->toArray();
         if(count($user)){
-            $inData = ['member_id' => $user[0]->id, 'ref_id' => $uid];
+            $inData = ['member_id' => $user[0]->id, 'ref_id' => $uid, 'created_on'=>Date('Y-m-d H:i:s')];
             DB::table('referrals')->insert($inData);
         }
     }
